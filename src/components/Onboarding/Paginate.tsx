@@ -8,7 +8,7 @@ const Paginate = ({ datas, currentIndex }: any) => {
 
 
     return (
-        <View style={{ flexDirection: "row", gap: 4 }}>
+        <View style={{ flexDirection: "row", gap: 4 ,marginLeft:20}}>
             {
                 datas.map((e: any, i: any) => (
                     <Animated.View key={e.id} style={[styles.dot, currentIndex + 1 <= i ? { opacity: 0.5, } : { opacity: 1, width: 8 }]}>
