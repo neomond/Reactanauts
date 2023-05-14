@@ -23,7 +23,7 @@ const GeoScreen = () => {
         </View>
       </View>
       <TouchableOpacity style={styles.btnStyle}>
-        <Text style={styles.btnStyleText}>Go to map</Text>
+        <Text style={styles.btnStyleText}>Open settings</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -46,14 +46,16 @@ const styles = StyleSheet.create({
   },
   textStylePrimary: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '600',
   },
   textStyleSecondary: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
+    rowGap: 8,
     fontWeight: '500',
     textAlign: 'center',
+    marginHorizontal: 25,
   },
   btnStyle: {
     backgroundColor: '#018CF1',

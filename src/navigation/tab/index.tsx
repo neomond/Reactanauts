@@ -7,6 +7,7 @@ import FavoriteStack from '../stack/tab/FavoriteStack';
 import ExploreStack from '../stack/tab/ExploreStack';
 import HomeDetails from '../../screens/HomeStack/HomeDetails';
 import GeoScreen from '../../screens/start/GeoScreen';
+import SavedItemsScreen from '../../screens/SavedItemsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +33,7 @@ const TabMain = () => {
 
         <Tab.Screen
           name="Favorites"
-          component={GeoScreen}
+          component={SavedItemsScreen}
           options={{
             tabBarIcon: () => <MaterialCommunityIcons name="star" size={26} />,
           }}
