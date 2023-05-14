@@ -43,7 +43,7 @@ const CategoryListScren = ({ navigation }: any) => {
         let categoryControl = categories.find(q => q.id == item.id);
 
         if (categoryControl)
-            style = { borderStyle: 'solid', borderColor: 'tomato', borderWidth: 3 }
+            style = { borderStyle: 'solid', borderColor: 'tomato', borderWidth: 1 }
 
         return (<>
             <Pressable onPress={() => categoryOperation(item)}>
