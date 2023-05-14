@@ -6,7 +6,7 @@ import { Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import { saveUserCategories } from '../../utils/storage/usersSavedCategoriesHelper';
 import { FirstLoginContext } from '../../context/FirstLoginContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';;
 
 const CategoryListScren = ({ navigation }: any) => {
 
@@ -29,7 +29,7 @@ const CategoryListScren = ({ navigation }: any) => {
         }
     }
 
-    const renderItem = ({ item }: any) => {
+    const RenderItem = ({ item }: any) => {
         let style = {};
 
         let categoryControl = categories.find(q => q.id == item.id);
@@ -37,7 +37,7 @@ const CategoryListScren = ({ navigation }: any) => {
         if (categoryControl)
             style = { borderStyle: 'solid', borderColor: 'tomato', borderWidth: 3 }
 
-        return <>
+        return (<>
             <Pressable onPress={() => categoryOperation(item)}>
                 <View style={style}>
                     <Text style={{ fontSize: 20 }}>{item.name}</Text>
@@ -54,7 +54,7 @@ const CategoryListScren = ({ navigation }: any) => {
                 </View>
 
             </Pressable>
-        </>
+        </>)
     }
 
 
@@ -73,12 +73,35 @@ const CategoryListScren = ({ navigation }: any) => {
     return (
         <SafeAreaView>
             <Button onPress={next}>Next</Button>
-            <FlatList
+            {/* <FlatList
                 data={categoriesData}
                 renderItem={renderItem}
-            />
+            /> */}
+            <View style={styles.container}>
+              <> {categoriesData.map(item => (
+                    <RenderItem key={item.id} item={item} />))
+                }
+                </> 
+            </View>
+
+
         </SafeAreaView>
     )
 }
 
+
+const styles = StyleSheet.create({
+    container: {
+      backgroundColor: "#7CA1B4",
+      flex: 1,
+      flexDirection:'row',
+      flexWrap: "wrap",
+    },
+    square: {
+      backgroundColor: "#7cb48f",
+      width: 100,
+      height: 100,
+      margin: 4,
+    },
+  });
 export default CategoryListScren
