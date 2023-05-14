@@ -1,33 +1,32 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileStack from '../stack/tab/ProfileStack';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FavoriteStack from '../stack/tab/FavoriteStack';
 import ExploreStack from '../stack/tab/ExploreStack';
 import HomeDetails from '../../screens/HomeStack/HomeDetails';
 import GeoScreen from '../../screens/start/GeoScreen';
 import SavedItemsScreen from '../../screens/SavedItemsScreen';
+import { BookmarkIconNormal, HomeIcon, HomeIconActive, SearchIconNormal } from '../../assets/generatedicons';
 
 const Tab = createBottomTabNavigator();
 
 const TabMain = () => {
   return (
     <>
-      <Tab.Navigator screenOptions={{headerShown: false}}>
+      <Tab.Navigator screenOptions={{ headerShown: false, title: "" ,headerBackgroundContainerStyle:{borderStartColor:"black"}}}>
         <Tab.Screen
-          name="Explore"
+
+          name="HomeStack"
           component={ExploreStack}
-          options={{
-            tabBarIcon: () => <MaterialCommunityIcons name="home" size={26} />,
-          }}
+          options={{tabBarIcon : () => <HomeIcon />}}
         />
 
         <Tab.Screen
           name="Profile"
           component={HomeDetails}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name="home" size={26} />,
+            tabBarIcon: () => <SearchIconNormal />,
           }}
         />
 
@@ -35,7 +34,7 @@ const TabMain = () => {
           name="Favorites"
           component={SavedItemsScreen}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name="star" size={26} />,
+            tabBarIcon: () => <BookmarkIconNormal />,
           }}
         />
       </Tab.Navigator>

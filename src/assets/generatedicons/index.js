@@ -2,6 +2,7 @@ export {default as BookmarkIconActive} from './BookmarkIconActive';
 export {default as BookmarkIconNormal} from './BookmarkIconNormal';
 export {default as ClockIcon} from './ClockIcon';
 export {default as ClubIcon} from './ClubIcon';
+export {default as HomeIcon} from './HomeIcon';
 export {default as HomeIconActive} from './HomeIconActive';
 export {default as Hospitalcon} from './Hospitalcon';
 export {default as HotelIcon} from './HotelIcon';
