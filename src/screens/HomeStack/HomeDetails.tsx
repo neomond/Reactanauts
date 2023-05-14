@@ -9,10 +9,12 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {LocationIcon} from '../../assets/generatedicons';
-import {TelephoneIcon} from '../../assets/generatedicons';
-import {ClockIcon} from '../../assets/generatedicons';
-import {StarIcon} from '../../assets/generatedicons';
+import {
+  LocationIcon,
+  StarIcon,
+  ClockIcon,
+  TelephoneIcon,
+} from '../../assets/generatedicons';
 
 const HomeDetails = () => {
   return (
@@ -24,10 +26,11 @@ const HomeDetails = () => {
             style={{width: 340, height: 253}}
             source={require('../../assets/images/testimg.png')}
           />
+          <View></View>
         </View>
         <View style={styles.secondaryCont}>
           <View>
-            <Text style={styles.textStylePrimary}>HomeDetails</Text>
+            <Text style={styles.textStylePrimary}>Museum in</Text>
           </View>
           <View style={[styles.iconstack, {columnGap: 3}]}>
             <StarIcon width="15" />
