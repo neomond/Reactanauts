@@ -8,18 +8,34 @@ import {
 } from 'react-native';
 import React from 'react';
 
+import {
+  LocationIcon,
+  StarIcon,
+  ClockIcon,
+  BookmarkIconNormal,
+  BookmarkIconActive,
+} from '../assets/generatedicons';
+
 const SavedItemsScreen = () => {
   return (
     <SafeAreaView style={styles.rootCont}>
-      <ScrollView>
-        <View style={styles.secondaryCont}>
-          <View>
-            <Text style={styles.textStylePrimary}>Saved</Text>
-          </View>
+      <View style={styles.secondaryCont}>
+        <View>
+          <Text style={styles.textStylePrimary}>Saved</Text>
         </View>
-
+      </View>
+      <ScrollView>
         <View>
           <View style={styles.detailsImg}>
+            <View style={styles.bookmarkIcon}>
+              <BookmarkIconActive
+                width="12"
+                height="12"
+                fill="#fff"
+                stroke="#fff"
+              />
+            </View>
+
             <Image
               style={{width: 340, height: 253}}
               source={require('../assets/images/testimg.png')}
@@ -28,13 +44,16 @@ const SavedItemsScreen = () => {
           <View style={styles.secondaryCintainer}>
             <Text style={styles.textStylePrimaryThird}>Museum in</Text>
             <View style={styles.thirdContainer}>
-              <View>
+              <View style={styles.iconstack}>
+                <LocationIcon width="13" />
                 <Text style={styles.textLabel}>13 km</Text>
               </View>
-              <View>
+              <View style={styles.iconstack}>
+                <ClockIcon width="13" />
                 <Text style={styles.textLabel}>08:00 - 23:00</Text>
               </View>
-              <View>
+              <View style={styles.iconstack}>
+                <StarIcon width="13" />
                 <Text style={styles.textLabel}>4.3</Text>
               </View>
             </View>
@@ -54,7 +73,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   secondaryCont: {
-    margin: 18,
+    marginHorizontal: 18,
+    marginVertical: 12,
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -77,6 +98,12 @@ const styles = StyleSheet.create({
   secondaryCintainer: {
     paddingHorizontal: 18,
     paddingVertical: 8,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    borderWidth: 1,
+    marginHorizontal: 18,
+    borderColor: '#262626',
+    paddingBottom: 12,
   },
   textStylePrimaryThird: {
     color: '#E8E8E8',
@@ -93,5 +120,19 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '700',
     color: '#E8E8E8',
+  },
+  iconstack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 4,
+  },
+  bookmarkIcon: {
+    position: 'absolute',
+    zIndex: 9999,
+    top: 15,
+    right: 35,
+    borderRadius: 20,
+    padding: 10,
+    backgroundColor: '#1C1C1C',
   },
 });
