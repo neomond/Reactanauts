@@ -14,7 +14,7 @@ export const FirstLoginContext = createContext<FirstLoginProviderProps>({
 
 export const FirstLoginProvider = ({ children }: any) => {
 
-    const [firstLogin, setFirstLogin] = useState(false);
+    const [firstLogin, setFirstLogin] = useState(true);
 
     const values: FirstLoginProviderProps = {
         firstLogin, setFirstLogin

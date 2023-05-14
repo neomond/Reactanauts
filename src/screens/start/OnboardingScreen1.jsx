@@ -19,9 +19,9 @@ const OnboardingScreen1 = ({ navigation }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const slidersRef = useRef(null)
-  console.log(slidersRef.current);
+  // console.log(slidersRef.current);
 
-  return (
+  return (<>
     <SafeAreaView style={styles.container}>
       <FlatList
         data={onBoardingData}
@@ -38,6 +38,7 @@ const OnboardingScreen1 = ({ navigation }) => {
       </View>
       <Button onPress={nextHandler}>Next</Button>
     </SafeAreaView>
+    </>
   )
 }
 

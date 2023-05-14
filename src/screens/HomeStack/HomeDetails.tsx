@@ -9,6 +9,10 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+import {LocationIcon} from '../../assets/generatedicons';
+import {TelephoneIcon} from '../../assets/generatedicons';
+import {ClockIcon} from '../../assets/generatedicons';
+import {StarIcon} from '../../assets/generatedicons';
 
 const HomeDetails = () => {
   return (
@@ -25,22 +29,26 @@ const HomeDetails = () => {
           <View>
             <Text style={styles.textStylePrimary}>HomeDetails</Text>
           </View>
-          <View>
+          <View style={[styles.iconstack, {columnGap: 3}]}>
+            <StarIcon width="15" />
             <Text style={styles.textStyleSecondary}>4.3</Text>
           </View>
         </View>
         <View style={styles.thirdCont}>
           <Text style={styles.textStylePrimaryThird}>Information</Text>
           <View style={{rowGap: 8}}>
-            <View>
+            <View style={styles.iconstack}>
+              <ClockIcon width="15" />
               <Text style={styles.textStyleThird}>
                 Mon - Fri, 08:00 - 23:00
               </Text>
             </View>
-            <View>
+            <View style={styles.iconstack}>
+              <TelephoneIcon width="14" />
               <Text style={styles.textStyleThird}>+994 01 234 56 78</Text>
             </View>
-            <View>
+            <View style={styles.iconstack}>
+              <LocationIcon width="14" />
               <Text style={styles.textStyleThird}>Nizami küçəsi, 203B</Text>
             </View>
           </View>
@@ -119,5 +127,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
+  },
+  iconstack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 8,
   },
 });
