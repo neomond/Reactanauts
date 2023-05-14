@@ -18,11 +18,11 @@ const OpenScreen = () => {
         getUserCategories()
             .then(res => {
                 if (res) {
-                    setFirstLogin(false)
+                    // setFirstLogin(false)
                     setloading(false);
                 }
                 else {
-                    setFirstLogin(true);
+                    // setFirstLogin(true);
                     setloading(false);
                 }
             })
@@ -34,12 +34,15 @@ const OpenScreen = () => {
     }
     else {
 
-        if (firstLogin)
-            return <StartStack />
-        else
-            return <FavoritesProvider>
+        if (firstLogin){
+            return(<StartStack />)}
+        else{
+            return(<>
+            <FavoritesProvider>
                 <TabMain />
             </FavoritesProvider>
+        </>)}
+
     }
 }
 
