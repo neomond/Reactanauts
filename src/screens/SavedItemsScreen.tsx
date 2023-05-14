@@ -11,13 +11,12 @@ import React from 'react';
 const SavedItemsScreen = () => {
   return (
     <SafeAreaView style={styles.rootCont}>
-      <ScrollView>
-        <View style={styles.secondaryCont}>
-          <View>
-            <Text style={styles.textStylePrimary}>Saved</Text>
-          </View>
+      <View style={styles.secondaryCont}>
+        <View>
+          <Text style={styles.textStylePrimary}>Saved</Text>
         </View>
-
+      </View>
+      <ScrollView>
         <View>
           <View style={styles.detailsImg}>
             <Image
@@ -77,6 +76,12 @@ const styles = StyleSheet.create({
   secondaryCintainer: {
     paddingHorizontal: 18,
     paddingVertical: 8,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    borderWidth: 1,
+    marginHorizontal: 18,
+    borderColor: '#262626',
+    paddingBottom: 12,
   },
   textStylePrimaryThird: {
     color: '#E8E8E8',
