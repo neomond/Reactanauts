@@ -8,7 +8,7 @@ const Explore = createNativeStackNavigator();
 const ExploreStack = () => {
   return (
     <Explore.Navigator>
-      <Explore.Screen name="ExploreMain" component={ExploreMain} />
+      <Explore.Screen name="ExploreMain" component={ExploreMain} options={{headerShown:false}} />
     </Explore.Navigator>
   )
 }
