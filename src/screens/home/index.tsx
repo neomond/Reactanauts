@@ -9,48 +9,75 @@ import { getAllData } from '../../utils/network/api'
 import { DataContext } from '../../context/DataContext'
 import { useIsFocused } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Geolocation from 'react-native-geolocation-service';
+import { request, PERMISSIONS } from 'react-native-permissions';
+import Geocoder from 'react-native-geocoding';
 
 
-
-
+//  [{
+//   title: 'Restourants',
+//   data: [
+//     { id: 1, name: 'Restoran 1', photo: 'https://example.com/restoran1.jpg', rating: 4.5 },
+//     { id: 2, name: 'Restoran 2', photo: 'https://example.com/restoran2.jpg', rating: 3.8 },
+//     // Restoran verilerini buraya ekleyin
+//   ],
+// },
+// {
+//   title: 'Hospital',
+//   data: [
+//     { id: 1, name: 'Hastane 1', photo: 'https://example.com/hastane1.jpg', rating: 4.2 },
+//     { id: 2, name: 'Hastane 2', photo: 'https://example.com/hastane2.jpg', rating: 4.7 },
+//     // Hastane verilerini buraya ekleyin
+//   ],
+// }]
 
 
 const ExploreMain = () => {
   const [load, setload] = useState(false)
   const isFocused = useIsFocused()
   const [sections, setSections] = useState<any[]>([])
-  // {
-  //   title: 'Restourants',
-  //   data: [
-  //     { id: 1, name: 'Restoran 1', photo: 'https://example.com/restoran1.jpg', rating: 4.5 },
-  //     { id: 2, name: 'Restoran 2', photo: 'https://example.com/restoran2.jpg', rating: 3.8 },
-  //     // Restoran verilerini buraya ekleyin
-  //   ],
-  // },
-  // {
-  //   title: 'Hospital',
-  //   data: [
-  //     { id: 1, name: 'Hastane 1', photo: 'https://example.com/hastane1.jpg', rating: 4.2 },
-  //     { id: 2, name: 'Hastane 2', photo: 'https://example.com/hastane2.jpg', rating: 4.7 },
-  //     // Hastane verilerini buraya ekleyin
-  //   ],
-  // },
-  // Diğer bölümleri buraya ekleyin
+
   const { contextData, setContextData } = useContext(DataContext)
   const [favcategories, setfavCategorites] = useState([])
+  const [latitude, setLatitude] = useState<any>(null);
+  const [longitude, setLongitude] = useState<any>(null);
+
+
+  const getLocation = async () => {
+    try {
+      const permission = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      if (permission === 'granted') {
+        Geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+
+          },
+          (error) => {
+            console.log(error);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
+    getLocation()
 
 
     AsyncStorage.getItem("userCategories")
       .then((res) => {
         console.log(res);
-        
+
         const favcategories1 = JSON.parse(res ? res : "[]")
         setfavCategorites(favcategories1);
-console.log(favcategories1);
+        console.log(favcategories1);
 
-        const mappedData = favcategories1.map((category:any) => {
-          const placesInCategory = contextData.filter((place: any)=> place.categoryId == category.id);
+
+        const mappedData = favcategories1.map((category: any) => {
+          const placesInCategory = contextData.filter((place: any) => place.categoryId == category.id);
           const mappedPlaces = placesInCategory.map((place: any) => ({
             id: place.id,
             name: place.name,
@@ -72,8 +99,8 @@ console.log(favcategories1);
           };
         });
         console.log(mappedData)
-        
-setSections(mappedData)
+
+        setSections(mappedData)
 
 
         setload(!load)
@@ -94,14 +121,7 @@ setSections(mappedData)
 
   const [products, setproducts] = useState<any[]>([]);
 
-  // useEffect(() => {
 
-  //     let baseService = new BaseNetwork();
-  //     baseService.getAll('products').then((response) => {
-  //         setproducts(response);
-  //     })
-
-  // }, [])
 
   const favOperation = (item: any) => {
 
@@ -115,30 +135,58 @@ setSections(mappedData)
     }
 
   }
+   function toRadians(degrees: any) {
+    return degrees * (Math.PI / 180);
+  }
 
+  function calculateDistance(lat1: any, lon1: any, lat2: any, lon2: any) {
+    console.log(lat1, lon1, lat2, lon2);
+    
+    const R = 6371; // Earth's radius in kilometers
+    const lat1Rad = toRadians(lat1);
+    const lon1Rad = toRadians(lon1);
+    const lat2Rad = toRadians(lat2);
+    const lon2Rad = toRadians(lon2);
 
+    const deltaLat = lat2Rad - lat1Rad;
+    const deltaLon = lon2Rad - lon1Rad;
+
+    const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+console.log(distance);
+
+    return distance;
+  }
+
+ 
+  // Example usage
+  const distance = calculateDistance(40.7128, -74.0060, 51.5074, -0.1278);
+
+  console.log(distance);
 
   const renderItem = ({ item }: any) => (
-    <View>
-      <View style={{ flexDirection: 'column', alignItems: 'center', padding: 40 }}>
-        <View style={{ position: 'relative' }}>
+    <View style={{ borderWidth: 1, borderRadius: 10, borderColor: "gray", marginTop: 20 }}>
+      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <View style={{ position: 'relative', marginLeft: 10, marginTop: 10 }}>
           <Image
             source={{ uri: item.imageUrl }}
-            style={{ width: 240, height: 200 }}
+            style={{ width: 280, height: 200 }}
           />
-          <View style={{ position: 'absolute', top: 0, left: 0, marginLeft: 180, backgroundColor: "black", padding: 10, borderRadius: 100, marginTop: 10 }}>
+          <View style={{ position: 'absolute', top: 0, left: 0, marginLeft: 220, backgroundColor: "black", padding: 10, borderRadius: 100, marginTop: 10 }}>
             <Kayd />
           </View>
         </View>
-        <View style={{ flexDirection: "row", marginTop: 20, gap: 35 }}>
+        <View style={{ flexDirection: "row", marginTop: 20, gap: 25 }}>
           <View style={{ flexDirection: "row" }}>
             <Loc />
-            <Text>4 km</Text>
+            <Text>{calculateDistance(latitude, longitude, item.latitude, item.longitude)}</Text>
           </View>
-          <Saat />
+          <View style={{ flexDirection: "row" }}><Saat />
+            <Text>{item.openCloseTime}</Text></View>
           <View style={{ flexDirection: "row" }}>
             <Ulsuz />
-            <Text style={{ fontSize: 14 }}>Puan: {item.rating}</Text>
+            <Text style={{ fontSize: 14 }}>{item.rate}</Text>
           </View>
         </View>
       </View>
@@ -154,15 +202,21 @@ setSections(mappedData)
       <ScrollView>
 
         {sections.map((bolum, index) => (
-          <View key={index} >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}>{bolum.title}</Text>
+          <View key={index} style={{ marginTop: 10 }}>
+            <View style={{ marginLeft: 20 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>{bolum.title}</Text>
+            </View>
+
+
             <FlatList
               data={bolum.data}
               renderItem={renderItem}
               keyExtractor={(item) => item.id.toString()}
               horizontal={true}
-              contentContainerStyle={{ paddingHorizontal: 10 }}
+              contentContainerStyle={{ paddingHorizontal: 10, gap: 20 }}
             />
+
+
           </View>
         ))}
       </ScrollView>

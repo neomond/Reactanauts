@@ -58,7 +58,7 @@ const App = () => {
     axios.get(`https:// /data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
     .then(response => {
       setWeatherData(response.data.main.temp)
-      // Hava durumu verilerini kullanarak istediğiniz işlemleri yapabilirsiniz
+    
     })
     .catch(error => {
       console.log(error);
