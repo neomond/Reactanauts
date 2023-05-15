@@ -8,6 +8,7 @@ import HomeDetails from '../../screens/HomeStack/HomeDetails';
 import GeoScreen from '../../screens/start/GeoScreen';
 import SavedItemsScreen from '../../screens/SavedItemsScreen';
 import { BookmarkIconNormal, HomeIcon, HomeIconActive, SearchIconNormal } from '../../assets/generatedicons';
+import SearchScreen from '../../screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,13 @@ const TabMain = () => {
         <Tab.Screen
           name="Favorites"
           component={SavedItemsScreen}
+          options={{
+            tabBarIcon: () => <BookmarkIconNormal />,
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
           options={{
             tabBarIcon: () => <BookmarkIconNormal />,
           }}
