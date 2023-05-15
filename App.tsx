@@ -5,7 +5,8 @@ import OpenScreen from './src/screens/openScreen/OpenScreen';
 
 const App = () => {
   return (
-    <>
+    <> 
+
       <NavigationContainer>
         <FirstLoginProvider>
           <OpenScreen />
