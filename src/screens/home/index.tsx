@@ -47,9 +47,10 @@ const ExploreMain = () => {
         
         const favcategories1 = JSON.parse(res ? res : "[]")
         setfavCategorites(favcategories1);
+console.log(favcategories1);
 
         const mappedData = favcategories1.map((category:any) => {
-          const placesInCategory = contextData.filter((place: any)=> place.categoryId === category.id);
+          const placesInCategory = contextData.filter((place: any)=> place.categoryId == category.id);
           const mappedPlaces = placesInCategory.map((place: any) => ({
             id: place.id,
             name: place.name,
