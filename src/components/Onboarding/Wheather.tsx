@@ -6,7 +6,7 @@ import Geocoder from 'react-native-geocoding';
 import axios from 'axios';
 import { Loc } from '../images';
 
-const API_KEY = 'YOUR_WEATHER_API_KEY';  // Replace 'YOUR_API_KEY' with your Google Maps Geocoding API key
+const API_KEY = 'daac4b59547b857ad8e0869083c4d642';  // Replace 'YOUR_API_KEY' with your Google Maps Geocoding API key
 
 const App = () => {
   const [latitude, setLatitude] = useState<any>(null);
@@ -51,7 +51,7 @@ const App = () => {
     .catch(function (error) {
       console.log(error);
     });
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
+    axios.get(`https:// /data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
     .then(response => {
       setWeatherData(response.data.main.temp)
       // Hava durumu verilerini kullanarak istediğiniz işlemleri yapabilirsiniz
