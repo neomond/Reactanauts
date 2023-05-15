@@ -7,7 +7,8 @@ import { CategoryProvider } from './src/context/CategoriesContext';
 
 const App = () => {
   return (
-    <>
+    <> 
+
       <NavigationContainer>
         <CategoryProvider>
           <DataProvider>
