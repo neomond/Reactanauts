@@ -14,6 +14,7 @@ const App = () => {
     <> 
 
       <NavigationContainer>
+        
         <CategoryProvider>
           <DataProvider>
             <FirstLoginProvider>
