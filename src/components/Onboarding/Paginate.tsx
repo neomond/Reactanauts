@@ -8,10 +8,10 @@ const Paginate = ({ datas, currentIndex }: any) => {
 
 
     return (
-        <View style={{ flexDirection: "row", gap: 4 }}>
+        <View style={{ flexDirection: "row", gap: 4 ,marginLeft:20}}>
             {
                 datas.map((e: any, i: any) => (
-                    <Animated.View key={e.id} style={[styles.dot, currentIndex + 1 <= i ? { opacity: 0.5, } : { opacity: 1, width: 20 }]}>
+                    <Animated.View key={e.id} style={[styles.dot, currentIndex + 1 <= i ? { opacity: 0.5, } : { opacity: 1, width: 8 }]}>
                     </Animated.View>
                 ))
             }
@@ -25,9 +25,9 @@ export default Paginate
 
 const styles = StyleSheet.create({
     dot: {
-        width: 16,
-        height: 16,
-        borderRadius: 8,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
         backgroundColor: "white"
     }
 })
