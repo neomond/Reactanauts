@@ -32,7 +32,10 @@ import Geocoder from 'react-native-geocoding';
 // }]
 
 
+
 const ExploreMain = ({navigation} :any) => {
+
+
   const [load, setload] = useState(false)
   const isFocused = useIsFocused()
   const [sections, setSections] = useState<any[]>([])

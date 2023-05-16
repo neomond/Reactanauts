@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button ,Image} from 'react-native';
+import { View, Text, Button, Image, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import axios from 'axios';
 import { Loc } from '../images';
 
-
-
 const API_KEY = '729cf7aad0a46677bbf6c8da49f416b5'; // Replace 'YOUR_API_KEY' with your OpenWeatherMap API key
-
 
 const App = () => {
   const [latitude, setLatitude] = useState<any>(null);
   const [longitude, setLongitude] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
-  const [konum, setkonum] = useState<any>([])
+  const [konum, setKonum] = useState<any>([]);
 
   const getLocation = async () => {
+    let granted=''
     try {
-      const permission = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      if (permission === 'granted') {
+      if(Platform.OS=='ios'){
+        granted= await   Geolocation.requestAuthorization('whenInUse')
+          if (granted === 'granted') {
         Geolocation.getCurrentPosition(
           (position) => {
             setLatitude(position.coords.latitude);
             setLongitude(position.coords.longitude);
-            getLocationName(position.coords.latitude, position.coords.longitude);
+            getLocationName(
+              position.coords.latitude,
+              position.coords.longitude
+            );
           },
           (error) => {
             console.log(error);
@@ -34,6 +36,45 @@ const App = () => {
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
       }
+
+      }
+      else{
+       granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+         if (granted === 'granted') {
+        Geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+            getLocationName(
+              position.coords.latitude,
+              position.coords.longitude
+            );
+          },
+          (error) => {
+            console.log(error);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      }
+      }
+      // const permission = await request(
+      //  Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+      // if (permission === 'granted') {
+      //   Geolocation.getCurrentPosition(
+      //     (position) => {
+      //       setLatitude(position.coords.latitude);
+      //       setLongitude(position.coords.longitude);
+      //       getLocationName(
+      //         position.coords.latitude,
+      //         position.coords.longitude
+      //       );
+      //     },
+      //     (error) => {
+      //       console.log(error);
+      //     },
+      //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      //   );
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -48,32 +89,26 @@ const App = () => {
       console.log(error);
     }
     axios
-    .get('http://api.bigdatacloud.net/data/reverse-geocode-client?latitude=40.4010583&longitude=49.9410572&localityLanguage=en')
-    .then((response) => {
-      setkonum(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    axios.get(`https:// /data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-    .then(response => {
-      setWeatherData(response.data.main.temp)
-    
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .get(
+        `http://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+      )
+      .then((response) => {
+        setKonum(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    
     axios
-      .get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
+      )
       .then((response) => {
         setWeatherData(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-      
   };
 
   useEffect(() => {
@@ -93,11 +128,12 @@ const App = () => {
         }}
       >
         <Loc />
-    <View style={{flexDirection:"row",gap:10}}>
-
-    <Text style={{ color: 'white', fontSize: 15 }}>{konum.city}</Text>
-        <Text style={{ color: 'white', fontSize: 15 }}>{konum.countryName}</Text>
-    </View>
+        <View style={{ flexDirection: 'row', gap: 10 }}>
+          <Text style={{ color: 'white', fontSize: 15 }}>{konum.city}</Text>
+          <Text style={{ color: 'white', fontSize: 15 }}>
+            {konum.countryName}
+          </Text>
+        </View>
       </View>
       {weatherData && (
         <View
@@ -108,14 +144,20 @@ const App = () => {
             width: 80,
             marginLeft: 15,
             borderRadius: 10,
-            gap:5
+            gap: 5,
           }}
-          
         >
-          <Text style={{ color: 'white', fontSize: 15 }}>{Math.round(weatherData.main.temp)-273} °C</Text>
-          <Image style={{width:30,height:20}}  source={{
-                            uri: `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
-                          }}/>
+          <Text style={{ color:
+
+ 'white', fontSize: 15 }}>
+            {Math.round(weatherData.main.temp) - 273} °C
+          </Text>
+          <Image
+            style={{ width: 30, height: 20 }}
+            source={{
+              uri: `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
+            }}
+          />
         </View>
       )}
     </View>
