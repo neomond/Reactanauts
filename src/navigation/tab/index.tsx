@@ -23,13 +23,13 @@ const TabMain = () => {
           options={{tabBarIcon : () => <HomeIcon />}}
         />
 
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Profile"
           component={HomeDetails}
           options={{
             tabBarIcon: () => <SearchIconNormal />,
           }}
-        />
+        /> */}
 
         <Tab.Screen
           name="Favorites"
