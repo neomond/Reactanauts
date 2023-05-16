@@ -16,7 +16,9 @@ const App = () => {
   const [konum, setKonum] = useState<any>([]);
 
   const getLocation = async () => {
+
     let granted = '';
+
     try {
       if (Platform.OS == 'ios') {
         granted = await Geolocation.requestAuthorization('whenInUse');
@@ -45,8 +47,10 @@ const App = () => {
     }
   };
 
+
   const getLocationName = async (latitude: any, longitude: any) => {
     console.log(latitude + 'salam ' + longitude);
+
 
     // try {
     //   const response = await Geocoder.from(latitude, longitude);
@@ -59,8 +63,10 @@ const App = () => {
       .get(
         `http://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
       )
+
       .then(response => {
         console.log('konum', response);
+
 
         setKonum(response.data);
       })

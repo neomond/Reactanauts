@@ -51,6 +51,8 @@ const ExploreMain = ({navigation}: any) => {
   const [longitude, setLongitude] = useState<any>(null);
 
   const getLocation = async () => {
+    console.log(Platform.OS);
+    
     let granted = '';
     try {
       if (Platform.OS == 'ios') {

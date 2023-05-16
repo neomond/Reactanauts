@@ -5,9 +5,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
+  View, FlatList
 } from 'react-native';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   LocationIcon,
@@ -15,8 +15,58 @@ import {
   ClockIcon,
   BookmarkIconNormal,
 } from '../assets/generatedicons';
+import { DataContext } from '../context/DataContext';
+
 
 const SearchScreen = () => {
+
+  const { contextData, setContextData } = useContext(DataContext)
+  console.log(contextData);
+
+  const [dataToShow, setDataToShow] = useState(contextData)
+  const renderItem = ({ item }: any) => (
+    <View>
+      <View style={styles.detailsImg}>
+        <View style={styles.bookmarkIcon}>
+          <BookmarkIconNormal
+            width="12"
+            height="12"
+            // fill="#fff"
+            stroke="#fff"
+          />
+        </View>
+
+        <Image
+          style={{
+            width: '90%',
+            height: 253,
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+          }}
+          source={require('../assets/images/testimg.png')}
+        />
+      </View>
+      <View style={styles.secondaryCintainer}>
+        <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
+        <View style={styles.thirdContainer}>
+          <View style={styles.iconstack}>
+            <LocationIcon width="13" />
+            <Text style={styles.textLabel}>13 km</Text>
+          </View>
+          <View style={styles.iconstack}>
+            <ClockIcon width="13" />
+            <Text style={styles.textLabel}>08:00 - 23:00</Text>
+          </View>
+          <View style={styles.iconstack}>
+            <StarIcon width="13" />
+            <Text style={styles.textLabel}>4.3</Text>
+          </View>
+        </View>
+      </View>
+    </View>)
+
+
+
   return (
     <SafeAreaView style={styles.rootCont}>
       <View style={styles.rooCont1}>
@@ -27,8 +77,8 @@ const SearchScreen = () => {
             style={styles.input}
             placeholder="Search by items"
             placeholderTextColor="#B9B9B9"
-            // onChangeText={onChangeText}
-            // value={text}
+          // onChangeText={onChangeText}
+          // value={text}
           />
         </View>
         <ScrollView horizontal={true} style={styles.categoriesItems}>
@@ -58,45 +108,12 @@ const SearchScreen = () => {
           </View>
         </ScrollView>
         <ScrollView>
-          <View>
-            <View style={styles.detailsImg}>
-              <View style={styles.bookmarkIcon}>
-                <BookmarkIconNormal
-                  width="12"
-                  height="12"
-                  // fill="#fff"
-                  stroke="#fff"
-                />
-              </View>
-
-              <Image
-                style={{
-                  width: '90%',
-                  height: 253,
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
-                }}
-                source={require('../assets/images/testimg.png')}
-              />
-            </View>
-            <View style={styles.secondaryCintainer}>
-              <Text style={styles.textStylePrimaryThird}>Museum in</Text>
-              <View style={styles.thirdContainer}>
-                <View style={styles.iconstack}>
-                  <LocationIcon width="13" />
-                  <Text style={styles.textLabel}>13 km</Text>
-                </View>
-                <View style={styles.iconstack}>
-                  <ClockIcon width="13" />
-                  <Text style={styles.textLabel}>08:00 - 23:00</Text>
-                </View>
-                <View style={styles.iconstack}>
-                  <StarIcon width="13" />
-                  <Text style={styles.textLabel}>4.3</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          <FlatList
+            data={dataToShow}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          // extraData={selectedId}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>
