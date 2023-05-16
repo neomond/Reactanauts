@@ -32,7 +32,7 @@ import Geocoder from 'react-native-geocoding';
 // }]
 
 
-const ExploreMain = () => {
+const ExploreMain = ({navigation} :any) => {
   const [load, setload] = useState(false)
   const isFocused = useIsFocused()
   const [sections, setSections] = useState<any[]>([])
@@ -158,11 +158,14 @@ const ExploreMain = () => {
     return Math.floor(distance/1000);
   }
 
- 
+ const goToDetail = (item :any) =>{
+  navigation.navigate("ExploreDetail", {item: item})
+ }
   // Example usage
 
 
   const renderItem = ({ item }: any) => (
+    <Pressable onPress={ () => goToDetail(item)}>
     <View style={{ borderWidth: 1, borderRadius: 10, borderColor: "gray", marginTop: 20 }}>
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         <View style={{ position: 'relative', marginLeft: 10, marginTop: 10 }}>
@@ -193,6 +196,7 @@ const ExploreMain = () => {
         </View>
       </View>
     </View>
+    </Pressable>
   );
 
 

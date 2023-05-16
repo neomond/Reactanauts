@@ -16,7 +16,10 @@ import {
   TelephoneIcon,
 } from '../../assets/generatedicons';
 
-const HomeDetails = () => {
+const HomeDetails = ({navigation,route}:any) => {
+
+   const {item} = route.params
+
   return (
     <SafeAreaView style={styles.mainCont}>
       <StatusBar barStyle="light-content" />
@@ -30,7 +33,7 @@ const HomeDetails = () => {
         </View>
         <View style={styles.secondaryCont}>
           <View>
-            <Text style={styles.textStylePrimary}>Museum in</Text>
+            <Text style={styles.textStylePrimary}>{item.name}</Text>
           </View>
           <View style={[styles.iconstack, {columnGap: 3}]}>
             <StarIcon width="15" />
