@@ -6,17 +6,34 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   LocationIcon,
   StarIcon,
   ClockIcon,
-  BookmarkIconNormal,
   BookmarkIconActive,
 } from '../assets/generatedicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SavedItemsScreen = () => {
+  const [savedItems, setSavedItems] = useState<string[]>([]);
+  const loadSavedItems = async () => {
+    try {
+      const savedItemsJson = await AsyncStorage.getItem('savedItems');
+      if (savedItemsJson) {
+        const savedItemsArray = JSON.parse(savedItemsJson);
+        setSavedItems(savedItemsArray);
+      }
+    } catch (error) {
+      console.log('Error loading saved items:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSavedItems();
+  }, []);
+
   return (
     <SafeAreaView style={styles.rootCont}>
       <View style={styles.secondaryCont}>
@@ -37,7 +54,12 @@ const SavedItemsScreen = () => {
             </View>
 
             <Image
-              style={{width: 340, height: 253}}
+              style={{
+                width: '90%',
+                height: 253,
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+              }}
               source={require('../assets/images/testimg.png')}
             />
           </View>

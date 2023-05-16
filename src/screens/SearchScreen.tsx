@@ -5,9 +5,11 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View, FlatList
+  View,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 
 import {
   LocationIcon,
@@ -15,35 +17,42 @@ import {
   ClockIcon,
   BookmarkIconNormal,
 } from '../assets/generatedicons';
-import { DataContext } from '../context/DataContext';
+import {DataContext} from '../context/DataContext';
+import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
 
-
-const SearchScreen = () => {
-
-  const { contextData, setContextData } = useContext(DataContext)
+const SearchScreen = ({navigation}: any) => {
+  const {contextData, setContextData} = useContext(DataContext);
   console.log(contextData);
-
-  const [dataToShow, setDataToShow] = useState(contextData)
-  const renderItem = ({ item }: any) => (
-    <View>
+  const goToDetail = (item: any) => {
+    navigation.navigate('SearchDetail', {item: item});
+  };
+  // id: place.id,
+  // name: place.name,
+  // categoryId: place.categoryId,
+  // rate: place.rate,
+  // lat: place.lat,
+  // long: place.long,
+  // imageUrl: place.imageUrl,
+  // openCloseTime: place.openCloseTime,
+  // adress: place.adress,
+  // phone: place.phone,
+  // isSaved: place.isSaved,
+  const [dataToShow, setDataToShow] = useState(contextData);
+  const renderItem = ({item}: any) => (
+    <TouchableOpacity onPress={() => goToDetail(item)}>
       <View style={styles.detailsImg}>
         <View style={styles.bookmarkIcon}>
-          <BookmarkIconNormal
-            width="12"
-            height="12"
-            // fill="#fff"
-            stroke="#fff"
-          />
+          <SvgBookmarkIconActive width="12" height="12" stroke="#fff" />
         </View>
 
         <Image
+          source={{uri: item.imageUrl}}
           style={{
             width: '90%',
             height: 253,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
           }}
-          source={require('../assets/images/testimg.png')}
         />
       </View>
       <View style={styles.secondaryCintainer}>
@@ -55,17 +64,16 @@ const SearchScreen = () => {
           </View>
           <View style={styles.iconstack}>
             <ClockIcon width="13" />
-            <Text style={styles.textLabel}>08:00 - 23:00</Text>
+            <Text style={styles.textLabel}>{item.openCloseTime}</Text>
           </View>
           <View style={styles.iconstack}>
             <StarIcon width="13" />
-            <Text style={styles.textLabel}>4.3</Text>
+            <Text style={styles.textLabel}>{item.rate}</Text>
           </View>
         </View>
       </View>
-    </View>)
-
-
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.rootCont}>
@@ -77,8 +85,8 @@ const SearchScreen = () => {
             style={styles.input}
             placeholder="Search by items"
             placeholderTextColor="#B9B9B9"
-          // onChangeText={onChangeText}
-          // value={text}
+            // onChangeText={onChangeText}
+            // value={text}
           />
         </View>
         <ScrollView horizontal={true} style={styles.categoriesItems}>
@@ -112,7 +120,7 @@ const SearchScreen = () => {
             data={dataToShow}
             renderItem={renderItem}
             keyExtractor={item => item.id}
-          // extraData={selectedId}
+            // extraData={selectedId}
           />
         </ScrollView>
       </View>
