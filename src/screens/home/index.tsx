@@ -99,7 +99,7 @@ const ExploreMain = ({navigation}: any) => {
       console.log(favcategories1);
 
       const mappedData = favcategories1.map((category: any) => {
-        const placesInCategory = contextData.filter(
+        const placesInCategory: any = contextData.filter(
           (place: any) => place.categoryId == category.id,
         );
         const mappedPlaces = placesInCategory.map((place: any) => ({

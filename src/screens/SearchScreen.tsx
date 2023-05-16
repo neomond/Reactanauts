@@ -43,7 +43,7 @@ const SearchScreen = () => {
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
           }}
-          source={require('../assets/images/testimg.png')}
+          source={{uri: item.imageUrl}}
         />
       </View>
       <View style={styles.secondaryCintainer}>
