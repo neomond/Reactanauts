@@ -1,3 +1,4 @@
+
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {FirstLoginProvider} from './src/context/FirstLoginContext';
@@ -10,6 +11,7 @@ const App = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
   return (
     <>
       <NavigationContainer>
