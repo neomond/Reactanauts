@@ -6,6 +6,8 @@ import {
   ScrollView,
   Image,
   Platform,
+  SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {BaseNetwork} from '../../network/api';
@@ -38,7 +40,7 @@ import Geocoder from 'react-native-geocoding';
 //   ],
 // }]
 
-const ExploreMain = () => {
+const ExploreMain = ({navigation}: any) => {
   const [load, setload] = useState(false);
   const isFocused = useIsFocused();
   const [sections, setSections] = useState<any[]>([]);
@@ -49,24 +51,36 @@ const ExploreMain = () => {
   const [longitude, setLongitude] = useState<any>(null);
 
   const getLocation = async () => {
+    let granted = '';
     try {
-      const permission = await request(
-        Platform.OS === 'ios'
-          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-      // const permission = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      if (permission === 'granted') {
-        Geolocation.getCurrentPosition(
-          position => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-          },
-          error => {
-            console.log(error);
-          },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-        );
+      if (Platform.OS == 'ios') {
+        granted = await Geolocation.requestAuthorization('whenInUse');
+        if (granted === 'granted') {
+          Geolocation.getCurrentPosition(
+            position => {
+              setLatitude(position.coords.latitude);
+              setLongitude(position.coords.longitude);
+            },
+            error => {
+              console.log(error);
+            },
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          );
+        }
+      } else {
+        granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        if (granted === 'granted') {
+          Geolocation.getCurrentPosition(
+            position => {
+              setLatitude(position.coords.latitude);
+              setLongitude(position.coords.longitude);
+            },
+            error => {
+              console.log(error);
+            },
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          );
+        }
       }
     } catch (error) {
       console.log(error);
@@ -115,7 +129,6 @@ const ExploreMain = () => {
   }, []);
 
   let {favorites, setFavorites} = useContext(FavoritesContext);
-
   const [products, setproducts] = useState<any[]>([]);
 
   const favOperation = (item: any) => {
@@ -152,71 +165,101 @@ const ExploreMain = () => {
     return Math.floor(distance / 1000);
   }
 
+  const goToDetail = (item: any) => {
+    navigation.navigate('ExploreDetail', {item: item});
+  };
   // Example usage
 
   const renderItem = ({item}: any) => (
-    <View
-      style={{
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: 'gray',
-        marginTop: 20,
-      }}>
-      <View style={{flexDirection: 'column', alignItems: 'center'}}>
-        <View style={{position: 'relative', marginLeft: 10, marginTop: 10}}>
-          <Image
-            source={{uri: item.imageUrl}}
-            style={{width: 280, height: 200}}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              marginLeft: 220,
-              backgroundColor: 'black',
-              padding: 10,
-              borderRadius: 100,
-              marginTop: 10,
-            }}>
-            <Kayd />
+    <Pressable onPress={() => goToDetail(item)}>
+      <View
+        style={{
+          borderWidth: 1,
+          borderRadius: 10,
+          borderColor: '#262626',
+          marginTop: 20,
+          marginLeft: 10,
+        }}>
+        <View style={{flexDirection: 'column'}}>
+          <View style={{position: 'relative'}}>
+            <Image
+              source={{uri: item.imageUrl}}
+              style={{
+                width: 280,
+                height: 200,
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+              }}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 10,
+                backgroundColor: 'black',
+                marginLeft: 10,
+                padding: 10,
+                borderRadius: 100,
+              }}>
+              <Kayd width="15" height="12" />
+            </View>
           </View>
-        </View>
-        <View style={{marginTop: 5}}>
-          <Text style={{color: 'white', fontSize: 18}}>{item.name}</Text>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 20, gap: 25}}>
-          <View style={{flexDirection: 'row'}}>
-            <Loc />
-            <Text style={{color: 'white'}}>
-              {calculateDistance(latitude, longitude, item.lat, item.long)} KM
+          <View style={{marginTop: 12, marginLeft: 10}}>
+            <Text style={{color: '#fff', fontSize: 16, marginLeft: 10}}>
+              {item.name}
             </Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <Saat />
-            <Text style={{color: 'white'}}>{item.openCloseTime}</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Ulsuz />
-            <Text style={{fontSize: 14, color: 'white'}}>{item.rate}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginVertical: 8,
+              gap: 25,
+              marginLeft: 20,
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Loc
+                width="12"
+                height="12"
+                style={{marginRight: 4, marginTop: 2}}
+              />
+              <Text style={{color: 'white'}}>
+                {calculateDistance(latitude, longitude, item.lat, item.long)} KM
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Saat
+                width="12"
+                height="12"
+                style={{marginRight: 4, marginTop: 2}}
+              />
+              <Text style={{color: 'white'}}>{item.openCloseTime}</Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Ulsuz
+                width="12"
+                height="12"
+                style={{marginRight: 4, marginTop: 2}}
+              />
+              <Text style={{fontSize: 14, color: 'white'}}>{item.rate}</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 
   return (
-    <View style={{flex: 1, backgroundColor: '#1C1C1C'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#1C1C1C'}}>
       <Wheather />
       <ScrollView>
         {sections.map((bolum, index) => (
-          <View key={index} style={{marginTop: 10}}>
+          <View key={index}>
             <View style={{marginLeft: 20}}>
               <Text
                 style={{
                   fontSize: 18,
                   fontWeight: 'bold',
-                  marginTop: 10,
+                  marginTop: 30,
                   color: 'white',
                 }}>
                 {bolum.title}
@@ -232,8 +275,10 @@ const ExploreMain = () => {
           </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default ExploreMain;
+
+const styles = StyleSheet.create({});
