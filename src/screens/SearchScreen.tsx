@@ -15,7 +15,6 @@ import {
   LocationIcon,
   StarIcon,
   ClockIcon,
-  BookmarkIconNormal,
 } from '../assets/generatedicons';
 import {DataContext} from '../context/DataContext';
 import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
@@ -24,7 +23,7 @@ const SearchScreen = ({navigation}: any) => {
   const {contextData, setContextData} = useContext(DataContext);
   console.log(contextData);
   const goToDetail = (item: any) => {
-    navigation.navigate('SearchDetail', {item: item});
+    navigation.navigate('ExploreDetail', {item: item});
   };
   // id: place.id,
   // name: place.name,
@@ -53,7 +52,6 @@ const SearchScreen = ({navigation}: any) => {
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
           }}
-        
         />
       </View>
       <View style={styles.secondaryCintainer}>
@@ -116,14 +114,13 @@ const SearchScreen = ({navigation}: any) => {
             <Text style={styles.textCategories}>🏨 Hospital</Text>
           </View>
         </ScrollView>
-        <ScrollView>
-          <FlatList
-            data={dataToShow}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            // extraData={selectedId}
-          />
-        </ScrollView>
+   
+        <FlatList
+          data={dataToShow}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
+
       </View>
     </SafeAreaView>
   );

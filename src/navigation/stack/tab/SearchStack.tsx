@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SearchScreen from '../../../screens/SearchScreen';
 import SearchDetailScreen from '../../../screens/SearchDetailScreen';
+import HomeDetails from '../../../screens/HomeStack/HomeDetails';
 
 const Search = createNativeStackNavigator();
 
@@ -14,8 +15,8 @@ const SearchStack = () => {
         options={{headerShown: false}}
       />
       <Search.Screen
-        name="SearchDetail"
-        component={SearchDetailScreen}
+        name="ExploreDetail"
+        component={HomeDetails}
         options={{headerShown: false}}
       />
     </Search.Navigator>
