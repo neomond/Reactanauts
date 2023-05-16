@@ -166,7 +166,7 @@ const ExploreMain = () => {
     <View style={{ borderWidth: 1, borderRadius: 10, borderColor: "gray", marginTop: 20 }}>
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         <View style={{ position: 'relative', marginLeft: 10, marginTop: 10 }}>
-        <Text style={{color: 'white',fontSize:16,paddingBottom:2}}>{item.name}</Text>
+        
           <Image
             source={{ uri: item.imageUrl }}
             style={{ width: 280, height: 200 }}
@@ -175,6 +175,9 @@ const ExploreMain = () => {
             <Kayd />
           </View>
         </View>
+       <View style={{marginTop:5}}> 
+       <Text style={{color:"white",fontSize:18}}>{item.name}</Text>
+       </View>
         <View style={{ flexDirection: "row", marginTop: 20, gap: 25 }}>
         
           <View style={{ flexDirection: "row" }}>
@@ -197,28 +200,23 @@ const ExploreMain = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "#1C1C1C" }}>
       <Wheather />
+<ScrollView>
+{sections.map((bolum, index) => (
+<View key={index} style={{ marginTop: 10 }}>
+<View style={{ marginLeft: 20 }}>
+<Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10, color: 'white' }}>{bolum.title}</Text>
+</View>
+<FlatList
+data={bolum.data}
+renderItem={renderItem}
+keyExtractor={(item) => item.id.toString()}
+horizontal={true}
+contentContainerStyle={{ paddingHorizontal: 10, gap: 20 }}
+/>
+</View>
+))}
+</ScrollView>
 
-      <ScrollView>
-
-        {sections.map((bolum, index) => (
-          <View key={index} style={{ marginTop: 10 }}>
-            <View style={{ marginLeft: 20 }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10,color:"white" }}>{bolum.title}</Text>
-            </View>
-
-
-            <FlatList
-              data={bolum.data}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-              horizontal={true}
-              contentContainerStyle={{ paddingHorizontal: 10, gap: 20 }}
-            />
-
-
-          </View>
-        ))}
-      </ScrollView>
 
     </View>
 
