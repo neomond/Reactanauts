@@ -1,12 +1,13 @@
 import {
   Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import React,{useEffect,useState} from 'react';
 import {
@@ -32,7 +33,23 @@ const isFocused = useIsFocused()
 // setlong(item.long)
 //   }
 //   }, [isFocused])
-  
+const openLink = async (lat,long) => {
+  const url = `https://www.google.com/maps/place/${lat},${long}`;
+
+  // Check if the link is supported by the device
+  const supported = await Linking.canOpenURL(url);
+
+  if (supported) {
+    // Open the link with the default browser
+    await Linking.openURL(url);
+  } else {
+    console.log('Unsupported link: ', url);
+  }
+};
+
+
+
+
   const lat =  parseFloat(item.lat)
   const long =  parseFloat(item.long)
   return (
@@ -97,7 +114,7 @@ const isFocused = useIsFocused()
         <Marker coordinate={{ latitude:lat, longitude:long}} />
       </MapView>
           </View>
-          <TouchableOpacity style={styles.btnStyle}>
+          <TouchableOpacity style={styles.btnStyle} onPress={() => openLink(lat,long)}>
             <Text style={styles.btnStyleText}>Go to map</Text>
           </TouchableOpacity>
         </View>
