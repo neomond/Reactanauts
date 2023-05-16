@@ -33,7 +33,7 @@ const isFocused = useIsFocused()
 // setlong(item.long)
 //   }
 //   }, [isFocused])
-const openLink = async (lat,long) => {
+const openLink = async (lat:any,long:any) => {
   const url = `https://www.google.com/maps/place/${lat},${long}`;
 
   // Check if the link is supported by the device
