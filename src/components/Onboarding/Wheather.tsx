@@ -16,6 +16,7 @@ const App = () => {
   const [konum, setKonum] = useState<any>([]);
 
   const getLocation = async () => {
+    
     let granted=''
     try {
       if(Platform.OS=='ios'){
@@ -81,18 +82,22 @@ const App = () => {
   };
 
   const getLocationName = async (latitude:any, longitude:any) => {
-    try {
-      const response = await Geocoder.from(latitude, longitude);
-      const address = response.results[0].formatted_address;
-      setLocation(address);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const response = await Geocoder.from(latitude, longitude);
+    //   const address = response.results[0].formatted_address;
+    //   setLocation(address);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     axios
       .get(
         `http://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
       )
       .then((response) => {
+        console.log(
+          'geldi'
+        );
+        
         setKonum(response.data);
       })
       .catch((error) => {

@@ -15,12 +15,12 @@ const Tab = createBottomTabNavigator();
 const TabMain = () => {
   return (
     <>
-      <Tab.Navigator screenOptions={{ headerShown: false, title: "" ,headerBackgroundContainerStyle:{borderStartColor:"black"}}}>
+      <Tab.Navigator screenOptions={{ headerShown: false, title: "", headerBackgroundContainerStyle: { borderStartColor: "black" } }}>
         <Tab.Screen
 
           name="HomeStack"
           component={ExploreStack}
-          options={{tabBarIcon : () => <HomeIcon />}}
+          options={{ tabBarIcon: () => <HomeIcon /> }}
         />
 
         {/* <Tab.Screen
@@ -30,7 +30,13 @@ const TabMain = () => {
             tabBarIcon: () => <SearchIconNormal />,
           }}
         /> */}
-
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{
+            tabBarIcon: () => <SearchIconNormal />,
+          }}
+        />
         <Tab.Screen
           name="Favorites"
           component={SavedItemsScreen}
@@ -38,13 +44,7 @@ const TabMain = () => {
             tabBarIcon: () => <BookmarkIconNormal />,
           }}
         />
-        <Tab.Screen
-          name="Search"
-          component={SearchScreen}
-          options={{
-            tabBarIcon: () => <BookmarkIconNormal />,
-          }}
-        />
+
       </Tab.Navigator>
     </>
   );
