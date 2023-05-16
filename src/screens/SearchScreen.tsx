@@ -53,6 +53,7 @@ const SearchScreen = ({navigation}: any) => {
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
           }}
+        
         />
       </View>
       <View style={styles.secondaryCintainer}>
