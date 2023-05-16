@@ -16,18 +16,38 @@ import {
   TelephoneIcon,
 } from '../../assets/generatedicons';
 
-const HomeDetails = ({navigation,route}:any) => {
-
-   const {item} = route.params
+const HomeDetails = ({navigation, route}: any) => {
+  // id: place.id,
+  // name: place.name,
+  // categoryId: place.categoryId,
+  // rate: place.rate,
+  // lat: place.lat,
+  // long: place.long,
+  // imageUrl: place.imageUrl,
+  // openCloseTime: place.openCloseTime,
+  // adress: place.adress,
+  // phone: place.phone,
+  // isSaved: place.isSaved,
+  const {item} = route.params;
 
   return (
     <SafeAreaView style={styles.mainCont}>
       <StatusBar barStyle="light-content" />
       <ScrollView>
         <View style={styles.detailsImg}>
-          <Image
+          {/* <Image
             style={{width: 340, height: 253}}
             source={require('../../assets/images/testimg.png')}
+          /> */}
+
+          <Image
+            source={{uri: item.imageUrl}}
+            style={{
+              width: '90%',
+              height: 253,
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+            }}
           />
           <View></View>
         </View>
@@ -37,7 +57,7 @@ const HomeDetails = ({navigation,route}:any) => {
           </View>
           <View style={[styles.iconstack, {columnGap: 3}]}>
             <StarIcon width="15" />
-            <Text style={styles.textStyleSecondary}>4.3</Text>
+            <Text style={styles.textStyleSecondary}>{item.rate}</Text>
           </View>
         </View>
         <View style={styles.thirdCont}>
@@ -45,17 +65,15 @@ const HomeDetails = ({navigation,route}:any) => {
           <View style={{rowGap: 8}}>
             <View style={styles.iconstack}>
               <ClockIcon width="15" />
-              <Text style={styles.textStyleThird}>
-                Mon - Fri, 08:00 - 23:00
-              </Text>
+              <Text style={styles.textStyleThird}>{item.openCloseTime}</Text>
             </View>
             <View style={styles.iconstack}>
               <TelephoneIcon width="14" />
-              <Text style={styles.textStyleThird}>+994 01 234 56 78</Text>
+              <Text style={styles.textStyleThird}>{item.phone}</Text>
             </View>
             <View style={styles.iconstack}>
               <LocationIcon width="14" />
-              <Text style={styles.textStyleThird}>Nizami küçəsi, 203B</Text>
+              <Text style={styles.textStyleThird}>{item.adress}</Text>
             </View>
           </View>
         </View>
@@ -116,8 +134,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     marginTop: 8,
-    width: 343,
-    height: 157,
+    width: '100%',
+    height: 160,
     backgroundColor: '#B9B9B9',
     borderRadius: 12,
   },
