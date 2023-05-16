@@ -1,3 +1,17 @@
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+
+// const SearchDetailScreen = () => {
+//   return (
+//     <View>
+//       <Text>SearchDetailScreen</Text>
+//     </View>
+//   )
+// }
+
+// export default SearchDetailScreen
+
+// const styles = StyleSheet.create({})
 import {
   Image,
   SafeAreaView,
@@ -14,9 +28,9 @@ import {
   StarIcon,
   ClockIcon,
   TelephoneIcon,
-} from '../../assets/generatedicons';
+} from '../assets/generatedicons';
 
-const HomeDetails = ({navigation, route}: any) => {
+const SearchDetailScreen = ({navigation, route}: any) => {
   const {item} = route.params;
 
   return (
@@ -24,7 +38,7 @@ const HomeDetails = ({navigation, route}: any) => {
       <StatusBar barStyle="light-content" />
       <ScrollView>
         <View style={styles.detailsImg}>
-        
+         
 
           <Image
             source={{uri: item.imageUrl}}
@@ -75,7 +89,7 @@ const HomeDetails = ({navigation, route}: any) => {
   );
 };
 
-export default HomeDetails;
+export default SearchDetailScreen;
 
 const styles = StyleSheet.create({
   mainCont: {

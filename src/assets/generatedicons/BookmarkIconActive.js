@@ -9,7 +9,7 @@ const SvgBookmarkIconActive = props => (
     viewBox="0 0 19 24"
     {...props}>
     <Path
-      stroke="#E0783E"
+      stroke="#fff"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
