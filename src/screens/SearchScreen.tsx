@@ -53,7 +53,7 @@ const SearchScreen = ({navigation}: any) => {
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
           }}
-          source={{uri: item.imageUrl}}
+        
         />
       </View>
       <View style={styles.secondaryCintainer}>
