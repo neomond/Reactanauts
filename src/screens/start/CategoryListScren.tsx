@@ -83,32 +83,35 @@ const CategoryListScren = ({navigation}: any) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <ActivityIndicator style={styles.loading} animating={loading} />
-        {loading ? (
-          <></>
-        ) : (
-          <View style={styles.mainCategories}>
-            <View style={styles.textWrapper}>
-              <Text style={styles.title}>Choose your interest</Text>
-              <Text style={styles.desc}>
-                Select at least 2 options that we can suggest you on the home
-                page.
-              </Text>
-            </View>
-            <FlatList
-              data={categoriesData}
-              renderItem={renderItem}
-              numColumns={2}
-            />
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <TouchableOpacity style={styles.btn} onPress={next}>
-                <Text style={styles.btnText}>Next</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </ScrollView>
+      <ActivityIndicator style={styles.loading} animating={loading} />
+      {!loading && (
+        <FlatList
+          contentContainerStyle={styles.mainCategories}
+          data={categoriesData}
+          renderItem={renderItem}
+          numColumns={2}
+          ListHeaderComponent={() => (
+            <>
+              <View style={styles.textWrapper}>
+                <Text style={styles.title}>Choose your interest</Text>
+                <Text style={styles.desc}>
+                  Select at least 2 options that we can suggest you on the home
+                  page.
+                </Text>
+              </View>
+            </>
+          )}
+          ListFooterComponent={() => (
+            <>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <TouchableOpacity style={styles.btn} onPress={next}>
+                  <Text style={styles.btnText}>Next</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };
