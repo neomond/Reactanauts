@@ -13,25 +13,6 @@ import Geolocation from 'react-native-geolocation-service';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 
-
- //  [{
-  //   title: 'Restourants',
-  //   data: [
-  //     { id: 1, name: 'Restoran 1', photo: 'https://example.com/restoran1.jpg', rating: 4.5 },
-  //     { id: 2, name: 'Restoran 2', photo: 'https://example.com/restoran2.jpg', rating: 3.8 },
-  //     // Restoran verilerini buraya ekleyin
-  //   ],
-  // },
-  // {
-  //   title: 'Hospital',
-  //   data: [
-  //     { id: 1, name: 'Hastane 1', photo: 'https://example.com/hastane1.jpg', rating: 4.2 },
-  //     { id: 2, name: 'Hastane 2', photo: 'https://example.com/hastane2.jpg', rating: 4.7 },
-  //     // Hastane verilerini buraya ekleyin
-  //   ],
-  // }]
-
-
 const ExploreMain = () => {
   const [load, setload] = useState(false)
   const isFocused = useIsFocused()
