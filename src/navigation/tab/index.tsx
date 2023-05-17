@@ -20,7 +20,8 @@ const TabMain = () => {
           title: '',
           tabBarStyle: {
             backgroundColor: '#1C1C1C',
-            paddingTop: 20,
+            paddingTop: 15,
+            paddingBottom:5,
             borderTopColor: 'black',
           },
           headerBackgroundContainerStyle: {borderStartColor: 'black'},

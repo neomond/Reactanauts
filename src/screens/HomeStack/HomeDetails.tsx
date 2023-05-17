@@ -32,7 +32,7 @@ const HomeDetails = ({navigation, route}: any) => {
 
   const { t, i18n } = useTranslation();
 
- const changeLang = (lang) => {
+ const changeLang = (lang: string) => {
 
     i18n.changeLanguage(lang).then(() => {
         // this.props.close(); 
