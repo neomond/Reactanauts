@@ -8,6 +8,8 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 
@@ -17,21 +19,26 @@ import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
 
 const SearchScreen = ({navigation}: any) => {
   const {contextData, setContextData} = useContext(DataContext);
+  const [filteredData, setFilteredData] = useState<any[]>(contextData);
+  const [searchText, setSearchText] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
   console.log(contextData);
   const goToDetail = (item: any) => {
     navigation.navigate('ExploreDetail', {item: item});
   };
-  // id: place.id,
-  // name: place.name,
-  // categoryId: place.categoryId,
-  // rate: place.rate,
-  // lat: place.lat,
-  // long: place.long,
-  // imageUrl: place.imageUrl,
-  // openCloseTime: place.openCloseTime,
-  // adress: place.adress,
-  // phone: place.phone,
-  // isSaved: place.isSaved,
+
+  const handleSearch = (text: any): any => {
+    setSearchText(text);
+    setLoading(true);
+    const filtered = contextData.filter((item: any) =>
+      item.name.toLowerCase().includes(text.toLowerCase()),
+    );
+    console.log(filteredData);
+    setFilteredData(filtered);
+    setLoading(false);
+  };
+
   const [dataToShow, setDataToShow] = useState(contextData);
   const renderItem = ({item}: any) => (
     <TouchableOpacity onPress={() => goToDetail(item)}>
@@ -39,7 +46,6 @@ const SearchScreen = ({navigation}: any) => {
         <View style={styles.bookmarkIcon}>
           <SvgBookmarkIconActive width="12" height="12" stroke="#fff" />
         </View>
-
         <Image
           source={{uri: item.imageUrl}}
           style={{
@@ -70,8 +76,19 @@ const SearchScreen = ({navigation}: any) => {
     </TouchableOpacity>
   );
 
+  const renderNoResults = () => (
+    <View style={{flex: 1, alignItems: 'center'}}>
+      {loading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : (
+        <Text style={{color: '#fff', fontSize: 18}}>No products found.</Text>
+      )}
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.rootCont}>
+      <StatusBar barStyle={'light-content'} />
       <View style={styles.rooCont1}>
         <View style={styles.secondaryCont}>
           {/* <SearchIconNormal /> */}
@@ -80,11 +97,13 @@ const SearchScreen = ({navigation}: any) => {
             style={styles.input}
             placeholder="Search by items"
             placeholderTextColor="#B9B9B9"
-            // onChangeText={onChangeText}
-            // value={text}
+            onChangeText={handleSearch}
           />
         </View>
-        <ScrollView horizontal={true} style={styles.categoriesItems}>
+        <ScrollView
+          horizontal={true}
+          style={styles.categoriesItems}
+          showsHorizontalScrollIndicator={false}>
           <View style={styles.categoriesItem}>
             <Text style={styles.textCategories}>🍽️ Restaurant</Text>
           </View>
@@ -110,12 +129,17 @@ const SearchScreen = ({navigation}: any) => {
             <Text style={styles.textCategories}>🏨 Hospital</Text>
           </View>
         </ScrollView>
-
-        <FlatList
-          data={dataToShow}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
+        {filteredData.length === 0 && searchText !== '' ? (
+          renderNoResults()
+        ) : loading ? (
+          <ActivityIndicator size="large" color="#fff" />
+        ) : (
+          <FlatList
+            data={filteredData}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -123,24 +147,29 @@ const SearchScreen = ({navigation}: any) => {
 
 export default SearchScreen;
 
+// id: place.id,
+// name: place.name,
+// categoryId: place.categoryId,
+// rate: place.rate,
+// lat: place.lat,
+// long: place.long,
+// imageUrl: place.imageUrl,
+// openCloseTime: place.openCloseTime,
+// adress: place.adress,
+// phone: place.phone,
+// isSaved: place.isSaved,
 const styles = StyleSheet.create({
   rootCont: {
     backgroundColor: '#1C1C1C',
   },
   rooCont1: {
-    // flex: 1,
     height: '100%',
     backgroundColor: '#1C1C1C',
-
-    // justifyContent: 'center',
   },
   secondaryCont: {
     marginHorizontal: 18,
     marginVertical: 12,
     paddingTop: 10,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
   },
   textStylePrimary: {
     color: '#fff',
@@ -206,8 +235,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     padding: 10,
-    paddingHorizontal: 40,
+    paddingHorizontal: 45,
     width: '100%',
+    color: '#fff',
   },
   iconsearch: {
     position: 'absolute',
