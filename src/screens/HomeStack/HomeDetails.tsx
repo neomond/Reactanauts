@@ -20,13 +20,30 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {useIsFocused, useTheme} from '@react-navigation/native';
 import {Double} from 'react-native/Libraries/Types/CodegenTypes';
-
+import '../../locales/i18n'
+import { useTranslation } from "react-i18next";
 const HomeDetails = ({navigation, route}: any) => {
-  // const [lat,setlat] = useState<Double>(35);
+ 
+    // const [lat,setlat] = useState<Double>(35);
   // const [long,setlong] = useState<Double>(35);
   const isFocused = useIsFocused();
   const {item}: any = route.params;
+  const [currentLanguage, setcurrentLanguage] = useState('az')
 
+  const { t, i18n } = useTranslation();
+
+ const changeLang = (lang) => {
+
+    i18n.changeLanguage(lang).then(() => {
+        // this.props.close(); 
+        // i18n.options.lng = lang;
+        setcurrentLanguage(lang)
+    });
+}
+  useEffect(() => {
+    changeLang('az')
+  }, [isFocused])
+  
   //   useEffect(() => {
   //   if(isFocused){
   // setlat(item.lat)
@@ -93,7 +110,7 @@ const openLink = async (lat:any,long:any) => {
           </View>
         </View>
         <View style={styles.thirdCont}>
-          <Text style={styles.textStylePrimaryThird}>Information</Text>
+          <Text style={styles.textStylePrimaryThird}>{t("information")}</Text>
           <View style={{rowGap: 8}}>
             <View style={styles.iconstack}>
               <ClockIcon width="15" />
