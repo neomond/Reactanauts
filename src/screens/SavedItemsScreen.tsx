@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 
@@ -15,42 +17,50 @@ import {
   BookmarkIconActive,
 } from '../assets/generatedicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SavedItemsScreen = () => {
+
   const [savedItems, setSavedItems] = useState<string[]>([]);
   const loadSavedItems = async () => {
     try {
-      const savedItemsJson = await AsyncStorage.getItem('savedItems');
+      const savedItemsJson = await AsyncStorage.getItem('basket');
       if (savedItemsJson) {
         const savedItemsArray = JSON.parse(savedItemsJson);
         setSavedItems(savedItemsArray);
+       
+        
       }
     } catch (error) {
       console.log('Error loading saved items:', error);
     }
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     loadSavedItems();
-  }, []);
-
-  return (
-    <SafeAreaView style={styles.rootCont}>
-      <View style={styles.secondaryCont}>
-        <View>
-          <Text style={styles.textStylePrimary}>Saved</Text>
-        </View>
-      </View>
-      <ScrollView>
+  });
+  const handleRemoveItem = async (item: string) => {
+    const updatedItems = savedItems.filter((savedItem) => savedItem !== item);
+    setSavedItems(updatedItems);
+    try {
+      await AsyncStorage.setItem('basket', JSON.stringify(updatedItems));
+    } catch (error) {
+      console.log('Error removing item:', error);
+    }
+  };
+  const renderItem = ({ item } : any) => (
+  
         <View>
           <View style={styles.detailsImg}>
             <View style={styles.bookmarkIcon}>
+              <TouchableOpacity  onPress={() => handleRemoveItem(item)}>
               <BookmarkIconActive
                 width="12"
                 height="12"
                 fill="#fff"
                 stroke="#fff"
               />
+              </TouchableOpacity>
             </View>
 
             <Image
@@ -60,29 +70,44 @@ const SavedItemsScreen = () => {
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
               }}
-              source={require('../assets/images/testimg.png')}
+              source={{uri: item.imageUrl}}
             />
           </View>
           <View style={styles.secondaryCintainer}>
-            <Text style={styles.textStylePrimaryThird}>Museum in</Text>
+            <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
             <View style={styles.thirdContainer}>
               <View style={styles.iconstack}>
                 <LocationIcon width="13" />
-                <Text style={styles.textLabel}>13 km</Text>
+                <Text style={styles.textLabel}>0 km</Text>
               </View>
               <View style={styles.iconstack}>
                 <ClockIcon width="13" />
-                <Text style={styles.textLabel}>08:00 - 23:00</Text>
+                <Text style={styles.textLabel}>{item.openCloseTime}</Text>
+    
               </View>
               <View style={styles.iconstack}>
                 <StarIcon width="13" />
-                <Text style={styles.textLabel}>4.3</Text>
+                <Text style={styles.textLabel}>{item.rate}</Text>
               </View>
             </View>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+    
+  );
+
+  return (
+   <SafeAreaView style={styles.rootCont}>
+       <View style={styles.secondaryCont}>
+        <View>
+          <Text style={styles.textStylePrimary}>Saved</Text>
+        </View>
+      </View>
+    <FlatList
+        data={savedItems}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+   </SafeAreaView>
   );
 };
 
