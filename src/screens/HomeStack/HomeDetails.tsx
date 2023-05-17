@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -20,13 +20,30 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {useIsFocused, useTheme} from '@react-navigation/native';
 import {Double} from 'react-native/Libraries/Types/CodegenTypes';
-
+import '../../locales/i18n'
+import { useTranslation } from "react-i18next";
 const HomeDetails = ({navigation, route}: any) => {
-  // const [lat,setlat] = useState<Double>(35);
+ 
+    // const [lat,setlat] = useState<Double>(35);
   // const [long,setlong] = useState<Double>(35);
   const isFocused = useIsFocused();
   const {item}: any = route.params;
+  const [currentLanguage, setcurrentLanguage] = useState('az')
 
+  const { t, i18n } = useTranslation();
+
+ const changeLang = (lang) => {
+
+    i18n.changeLanguage(lang).then(() => {
+        // this.props.close(); 
+        // i18n.options.lng = lang;
+        setcurrentLanguage(lang)
+    });
+}
+  useEffect(() => {
+    changeLang('az')
+  }, [isFocused])
+  
   //   useEffect(() => {
   //   if(isFocused){
   // setlat(item.lat)
@@ -34,38 +51,34 @@ const HomeDetails = ({navigation, route}: any) => {
   //   }
   //   }, [isFocused])
 
-//   useEffect(() => {
-//   if(isFocused){
-// setlat(item.lat)
-// setlong(item.long)
-//   }
-//   }, [isFocused])
-const openLink = async (lat:any,long:any) => {
-  let url = ""
-  if (Platform.OS === "android") {
-     url = `https://www.google.com/maps/place/${lat},${long}`;
-  }
-  if(Platform.OS == "ios") {
-    url =  `https://maps.apple.com/?ll=${lat},${long}`
-  }
+  //   useEffect(() => {
+  //   if(isFocused){
+  // setlat(item.lat)
+  // setlong(item.long)
+  //   }
+  //   }, [isFocused])
+  const openLink = async (lat: any, long: any) => {
+    let url = '';
+    if (Platform.OS === 'android') {
+      url = `https://www.google.com/maps/place/${lat},${long}`;
+    }
+    if (Platform.OS == 'ios') {
+      url = `https://maps.apple.com/?ll=${lat},${long}`;
+    }
 
+    // Check if the link is supported by the device
+    const supported = await Linking.canOpenURL(url);
 
-  // Check if the link is supported by the device
-  const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      // Open the link with the default browser
+      await Linking.openURL(url);
+    } else {
+      console.log('Unsupported link: ', url);
+    }
+  };
 
-  if (supported) {
-    // Open the link with the default browser
-    await Linking.openURL(url);
-  } else {
-    console.log('Unsupported link: ', url);
-  }
-};
-
-
-
-
-  const lat =  parseFloat(item.lat)
-  const long =  parseFloat(item.long)
+  const lat = parseFloat(item.lat);
+  const long = parseFloat(item.long);
 
   return (
     <SafeAreaView style={styles.mainCont}>
@@ -93,7 +106,7 @@ const openLink = async (lat:any,long:any) => {
           </View>
         </View>
         <View style={styles.thirdCont}>
-          <Text style={styles.textStylePrimaryThird}>Information</Text>
+          <Text style={styles.textStylePrimaryThird}>{t("information")}</Text>
           <View style={{rowGap: 8}}>
             <View style={styles.iconstack}>
               <ClockIcon width="15" />
@@ -124,7 +137,9 @@ const openLink = async (lat:any,long:any) => {
               <Marker coordinate={{latitude: lat, longitude: long}} />
             </MapView>
           </View>
-          <TouchableOpacity style={styles.btnStyle} onPress={() => openLink(lat,long)}>
+          <TouchableOpacity
+            style={styles.btnStyle}
+            onPress={() => openLink(lat, long)}>
             <Text style={styles.btnStyleText}>Go to map</Text>
           </TouchableOpacity>
         </View>
@@ -150,10 +165,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 20,
   },
   textStylePrimary: {
-    // color: '#fff',
-    fontSize: 20,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: '600',
   },
   textStyleSecondary: {
