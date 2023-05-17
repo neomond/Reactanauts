@@ -10,15 +10,18 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
+import {BaseNetwork} from '../../network/api';
 import {FavoritesContext} from '../../context/FavoritesContext';
+import {ActivityIndicator, Button} from 'react-native-paper';
 import Wheather from '../../components/Onboarding/Wheather';
 import {Kayd, Loc, Saat, Ulsuz} from '../../components/images';
-import {BookmarkIconActive} from '../../assets/generatedicons';
+import {getAllData} from '../../utils/network/api';
 import {DataContext} from '../../context/DataContext';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
+import Geocoder from 'react-native-geocoding';
 
 //  [{
 //   title: 'Restourants',
@@ -49,7 +52,7 @@ const ExploreMain = ({navigation}: any) => {
 
   const getLocation = async () => {
     console.log(Platform.OS);
-
+    
     let granted = '';
     try {
       if (Platform.OS == 'ios') {
@@ -96,7 +99,7 @@ const ExploreMain = ({navigation}: any) => {
       console.log(favcategories1);
 
       const mappedData = favcategories1.map((category: any) => {
-        const placesInCategory: any = contextData.filter(
+        const placesInCategory = contextData.filter(
           (place: any) => place.categoryId == category.id,
         );
         const mappedPlaces = placesInCategory.map((place: any) => ({
@@ -200,12 +203,7 @@ const ExploreMain = ({navigation}: any) => {
                 padding: 10,
                 borderRadius: 100,
               }}>
-              <BookmarkIconActive
-                width="15"
-                height="12"
-                fill="#fff"
-                stroke="#fff"
-              />
+              <Kayd width="15" height="12" />
             </View>
           </View>
           <View style={{marginTop: 12, marginLeft: 10}}>

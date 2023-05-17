@@ -15,7 +15,7 @@ const SearchStack = () => {
         options={{headerShown: false}}
       />
       <Search.Screen
-        name="ExploreDetail"
+        name="SearchDetail"
         component={HomeDetails}
         options={{headerShown: false}}
       />
