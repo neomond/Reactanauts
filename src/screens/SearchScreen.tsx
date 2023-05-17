@@ -11,11 +11,7 @@ import {
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 
-import {
-  LocationIcon,
-  StarIcon,
-  ClockIcon,
-} from '../assets/generatedicons';
+import {LocationIcon, StarIcon, ClockIcon} from '../assets/generatedicons';
 import {DataContext} from '../context/DataContext';
 import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
 
@@ -114,13 +110,12 @@ const SearchScreen = ({navigation}: any) => {
             <Text style={styles.textCategories}>🏨 Hospital</Text>
           </View>
         </ScrollView>
-   
+
         <FlatList
           data={dataToShow}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-
       </View>
     </SafeAreaView>
   );

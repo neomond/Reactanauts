@@ -9,23 +9,29 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import React,{useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   LocationIcon,
   StarIcon,
   ClockIcon,
   TelephoneIcon,
 } from '../../assets/generatedicons';
-import MapView,{Marker} from 'react-native-maps';
-import { useIsFocused } from '@react-navigation/native';
-import { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import MapView, {Marker} from 'react-native-maps';
+import {useIsFocused, useTheme} from '@react-navigation/native';
+import {Double} from 'react-native/Libraries/Types/CodegenTypes';
 
-
-const HomeDetails = ({navigation,route}:any) => {
+const HomeDetails = ({navigation, route}: any) => {
   // const [lat,setlat] = useState<Double>(35);
   // const [long,setlong] = useState<Double>(35);
-const isFocused = useIsFocused()
-   const {item}: any = route.params
+  const isFocused = useIsFocused();
+  const {item}: any = route.params;
+
+  //   useEffect(() => {
+  //   if(isFocused){
+  // setlat(item.lat)
+  // setlong(item.long)
+  //   }
+  //   }, [isFocused])
 
 //   useEffect(() => {
 //   if(isFocused){
@@ -52,13 +58,12 @@ const openLink = async (lat:any,long:any) => {
 
   const lat =  parseFloat(item.lat)
   const long =  parseFloat(item.long)
+
   return (
     <SafeAreaView style={styles.mainCont}>
       <StatusBar barStyle="light-content" />
       <ScrollView>
         <View style={styles.detailsImg}>
-        
-
           <Image
             source={{uri: item.imageUrl}}
             style={{
@@ -99,20 +104,17 @@ const openLink = async (lat:any,long:any) => {
         <View style={styles.thirdCont}>
           <Text style={styles.textStylePrimaryThird}>Map</Text>
           <View style={styles.mapStyle}>
-            
-          <MapView
-        style={styles.map}
-        //specify our coordinates.
-        initialRegion={{
-          latitude: lat,
-          longitude: long,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01
-          
-          
-        }} >
-        <Marker coordinate={{ latitude:lat, longitude:long}} />
-      </MapView>
+            <MapView
+              style={styles.map}
+              //specify our coordinates.
+              initialRegion={{
+                latitude: lat,
+                longitude: long,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}>
+              <Marker coordinate={{latitude: lat, longitude: long}} />
+            </MapView>
           </View>
           <TouchableOpacity style={styles.btnStyle} onPress={() => openLink(lat,long)}>
             <Text style={styles.btnStyleText}>Go to map</Text>
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textStylePrimary: {
-    color: '#fff',
+    // color: '#fff',
     fontSize: 20,
     fontWeight: '600',
   },

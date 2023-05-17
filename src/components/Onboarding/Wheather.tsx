@@ -16,7 +16,6 @@ const App = () => {
   const [konum, setKonum] = useState<any>([]);
 
   const getLocation = async () => {
-
     let granted = '';
 
     try {
@@ -47,10 +46,8 @@ const App = () => {
     }
   };
 
-
   const getLocationName = async (latitude: any, longitude: any) => {
     console.log(latitude + 'salam ' + longitude);
-
 
     // try {
     //   const response = await Geocoder.from(latitude, longitude);
@@ -61,12 +58,11 @@ const App = () => {
     // }
     axios
       .get(
-        `http://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
       )
 
       .then(response => {
-        console.log('konum', response);
-
+        console.log('konummmm', response);
 
         setKonum(response.data);
       })
@@ -109,7 +105,9 @@ const App = () => {
         <View style={{flexDirection: 'row', gap: 10}}>
           <Text style={{color: 'white', fontSize: 15}}>{konum.city}</Text>
           <Text style={{color: 'white', fontSize: 15}}>
-            {konum.countryName}
+            {konum.countryName && konum.countryName.length > 12
+              ? konum.countryName.slice(0, 9) + '...'
+              : konum.countryName}
           </Text>
         </View>
       </View>
@@ -124,15 +122,15 @@ const App = () => {
             borderRadius: 10,
             gap: 5,
           }}>
-          <Text style={{color: 'white', fontSize: 15}}>
-            {Math.round(weatherData.main.temp) - 273} °C
-          </Text>
           <Image
             style={{width: 30, height: 20}}
             source={{
-              uri: `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
+              uri: `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
             }}
           />
+          <Text style={{color: 'white', fontSize: 15}}>
+            {Math.round(weatherData.main.temp) - 273} °C
+          </Text>
         </View>
       )}
     </View>
