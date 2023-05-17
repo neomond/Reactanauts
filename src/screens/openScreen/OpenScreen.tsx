@@ -18,11 +18,11 @@ const OpenScreen = () => {
         getUserCategories()
             .then(res => {
                 if (res) {
-                    // setFirstLogin(false)
+                    setFirstLogin(false)
                     setloading(false);
                 }
                 else {
-                    // setFirstLogin(true);
+                    setFirstLogin(true);
                     setloading(false);
                 }
             })
