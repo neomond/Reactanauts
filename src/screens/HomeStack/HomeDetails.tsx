@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -33,31 +33,28 @@ const HomeDetails = ({navigation, route}: any) => {
   //   }
   //   }, [isFocused])
 
-//   useEffect(() => {
-//   if(isFocused){
-// setlat(item.lat)
-// setlong(item.long)
-//   }
-//   }, [isFocused])
-const openLink = async (lat:any,long:any) => {
-  const url = `https://www.google.com/maps/place/${lat},${long}`;
+  //   useEffect(() => {
+  //   if(isFocused){
+  // setlat(item.lat)
+  // setlong(item.long)
+  //   }
+  //   }, [isFocused])
+  const openLink = async (lat: any, long: any) => {
+    const url = `https://www.google.com/maps/place/${lat},${long}`;
 
-  // Check if the link is supported by the device
-  const supported = await Linking.canOpenURL(url);
+    // Check if the link is supported by the device
+    const supported = await Linking.canOpenURL(url);
 
-  if (supported) {
-    // Open the link with the default browser
-    await Linking.openURL(url);
-  } else {
-    console.log('Unsupported link: ', url);
-  }
-};
+    if (supported) {
+      // Open the link with the default browser
+      await Linking.openURL(url);
+    } else {
+      console.log('Unsupported link: ', url);
+    }
+  };
 
-
-
-
-  const lat =  parseFloat(item.lat)
-  const long =  parseFloat(item.long)
+  const lat = parseFloat(item.lat);
+  const long = parseFloat(item.long);
 
   return (
     <SafeAreaView style={styles.mainCont}>
@@ -116,7 +113,9 @@ const openLink = async (lat:any,long:any) => {
               <Marker coordinate={{latitude: lat, longitude: long}} />
             </MapView>
           </View>
-          <TouchableOpacity style={styles.btnStyle} onPress={() => openLink(lat,long)}>
+          <TouchableOpacity
+            style={styles.btnStyle}
+            onPress={() => openLink(lat, long)}>
             <Text style={styles.btnStyleText}>Go to map</Text>
           </TouchableOpacity>
         </View>
