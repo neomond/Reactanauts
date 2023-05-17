@@ -1,6 +1,7 @@
 import {
   Image,
   Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -40,7 +41,14 @@ const HomeDetails = ({navigation, route}: any) => {
 //   }
 //   }, [isFocused])
 const openLink = async (lat:any,long:any) => {
-  const url = `https://www.google.com/maps/place/${lat},${long}`;
+  let url = ""
+  if (Platform.OS === "android") {
+     url = `https://www.google.com/maps/place/${lat},${long}`;
+  }
+  if(Platform.OS == "ios") {
+    url =  `https://maps.apple.com/?ll=${lat},${long}`
+  }
+
 
   // Check if the link is supported by the device
   const supported = await Linking.canOpenURL(url);
