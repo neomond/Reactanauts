@@ -8,6 +8,7 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {BaseNetwork} from '../../network/api';
@@ -22,25 +23,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
-
-//  [{
-//   title: 'Restourants',
-//   data: [
-//     { id: 1, name: 'Restoran 1', photo: 'https://example.com/restoran1.jpg', rating: 4.5 },
-//     { id: 2, name: 'Restoran 2', photo: 'https://example.com/restoran2.jpg', rating: 3.8 },
-//     // Restoran verilerini buraya ekleyin
-//   ],
-// },
-// {
-//   title: 'Hospital',
-//   data: [
-//     { id: 1, name: 'Hastane 1', photo: 'https://example.com/hastane1.jpg', rating: 4.2 },
-//     { id: 2, name: 'Hastane 2', photo: 'https://example.com/hastane2.jpg', rating: 4.7 },
-//     // Hastane verilerini buraya ekleyin
-//   ],
-// }]
+import { BookmarkIconActive } from '../../assets/generatedicons';
 
 const ExploreMain = ({navigation}: any) => {
+  const [selectedItemIds, setSelectedItemIds] = useState<any>([]);
+
   const [load, setload] = useState(false);
   const isFocused = useIsFocused();
   const [sections, setSections] = useState<any[]>([]);
@@ -49,9 +36,10 @@ const ExploreMain = ({navigation}: any) => {
   const [favcategories, setfavCategorites] = useState([]);
   const [latitude, setLatitude] = useState<any>(null);
   const [longitude, setLongitude] = useState<any>(null);
+  const [isButtonPressed, setIsButtonPressed] = useState<any>(false);
 
   const getLocation = async () => {
-    console.log(Platform.OS);
+
     
     let granted = '';
     try {
@@ -90,6 +78,7 @@ const ExploreMain = ({navigation}: any) => {
   };
   useEffect(() => {
     getLocation();
+  
 
     AsyncStorage.getItem('userCategories').then(res => {
       console.log(res);
@@ -134,6 +123,7 @@ const ExploreMain = ({navigation}: any) => {
   const [products, setproducts] = useState<any[]>([]);
 
   const favOperation = (item: any) => {
+   
     let favControl = favorites.find(favItem => favItem.id === item.id);
     if (!favControl) {
       setFavorites([...favorites, item]);
@@ -142,6 +132,82 @@ const ExploreMain = ({navigation}: any) => {
       setFavorites([...filteredFavorites]);
     }
   };
+  // const Favorites = async (item: any) => {
+  //   setIsButtonPressed(!isButtonPressed)
+  //   try {
+  //     const basketItems: any = await AsyncStorage.getItem('basket');
+  //     let basket = [];
+     
+  
+  //     if (basketItems !== null) {
+  //       basket = JSON.parse(basketItems);
+  
+  //       const isItemInBasket = basket.some((basketItem: any) => basketItem.id === item.id);
+  //       if (isItemInBasket) {
+  //         // Item already exists in the basket, remove it
+  //         const updatedBasket = basket.filter((basketItem: any) => basketItem.id !== item.id);
+  //         await AsyncStorage.setItem('basket', JSON.stringify(updatedBasket));
+  //         console.log('Item removed from basket:', item);
+  //       } else {
+  //         // Item doesn't exist in the basket, add it
+  //         basket.push(item);
+  //         await AsyncStorage.setItem('basket', JSON.stringify(basket));
+  //         console.log('Item added to basket:', item);
+  //       }
+  //     } else {
+  //       // No items in the basket, add the item
+  //       basket.push(item);
+  //       await AsyncStorage.setItem('basket', JSON.stringify(basket));
+  //       console.log('Item added to basket:', item);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error adding/removing item to/from basket:', error);
+  //   }
+  // };
+  const Favorites = async (item: any) => {
+    setIsButtonPressed(!isButtonPressed);
+    if (selectedItemIds.includes(item.id)) {
+      
+      const updatedItemIds = selectedItemIds.filter((item:any) => item.id !== item.id);
+      setSelectedItemIds(updatedItemIds);
+    } else {
+      
+      setSelectedItemIds([...selectedItemIds, item.id]);
+    }
+  
+    try {
+      const basketItems: any = await AsyncStorage.getItem('basket');
+      let basket = [];
+  
+      if (basketItems !== null) {
+        basket = JSON.parse(basketItems);
+  
+        const isItemInBasket = basket.some((basketItem: any) => basketItem.id === item.id);
+        if (isItemInBasket) {
+          // Item already exists in the basket, remove it
+          const updatedBasket = basket.filter((basketItem: any) => basketItem.id !== item.id);
+          await AsyncStorage.setItem('basket', JSON.stringify(updatedBasket));
+          console.log('Item removed from basket:', item);
+        } else {
+          // Item doesn't exist in the basket, add it
+          basket.push(item);
+          await AsyncStorage.setItem('basket', JSON.stringify(basket));
+          console.log('Item added to basket:', item);
+        }
+      } else {
+        // No items in the basket, add the item
+        basket.push(item);
+        await AsyncStorage.setItem('basket', JSON.stringify(basket));
+        console.log('Item added to basket:', item);
+      }
+    } catch (error) {
+      console.error('Error adding/removing item to/from basket:', error);
+    }
+  };
+  
+  
+  
+  
   function toRadians(degrees: any) {
     return degrees * (Math.PI / 180);
   }
@@ -173,6 +239,7 @@ const ExploreMain = ({navigation}: any) => {
   // Example usage
 
   const renderItem = ({item}: any) => (
+
     <Pressable onPress={() => goToDetail(item)}>
       <View
         style={{
@@ -203,7 +270,15 @@ const ExploreMain = ({navigation}: any) => {
                 padding: 10,
                 borderRadius: 100,
               }}>
-              <Kayd width="15" height="12" />
+              <TouchableOpacity onPress={()=>Favorites(item)}>
+              <BookmarkIconActive 
+               width="12"
+                height="20"
+                fill={selectedItemIds.includes(item.id) ? 'white' : 'black'}
+
+                
+                />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{marginTop: 12, marginLeft: 10}}>
