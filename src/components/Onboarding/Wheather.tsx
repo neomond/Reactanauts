@@ -102,7 +102,7 @@ const App = () => {
           borderRadius: 10,
         }}>
         <Loc />
-        <View style={{flexDirection: 'row', gap: 10}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
           <Text style={{color: 'white', fontSize: 15}}>{konum.city}</Text>
           <Text style={{color: 'white', fontSize: 15}}>
             {konum.countryName && konum.countryName.length > 12
@@ -116,11 +116,12 @@ const App = () => {
           style={{
             backgroundColor: '#262626',
             flexDirection: 'row',
-            padding: 10,
+            alignItems: 'center',
+            paddingVertical: 10,
+            paddingRight: 10,
             width: 80,
             marginLeft: 15,
             borderRadius: 10,
-            gap: 5,
           }}>
           <Image
             style={{width: 30, height: 20}}
