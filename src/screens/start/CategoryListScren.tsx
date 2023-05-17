@@ -10,7 +10,7 @@ import {
 import React, {useContext, useEffect, useState} from 'react';
 import {categoriesData} from '../../data/categoriesData';
 import {Category} from '../../models/Category';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import {saveUserCategories} from '../../utils/storage/usersSavedCategoriesHelper';
 import {FirstLoginContext} from '../../context/FirstLoginContext';
 import {SafeAreaView} from 'react-native-safe-area-context';

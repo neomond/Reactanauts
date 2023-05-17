@@ -251,7 +251,7 @@ const ExploreMain = ({navigation}: any) => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#1C1C1C'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#1c1c1c'}}>
       <Wheather />
       <ScrollView>
         {sections.map((bolum, index) => (

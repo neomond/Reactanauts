@@ -38,8 +38,6 @@ const SearchDetailScreen = ({navigation, route}: any) => {
       <StatusBar barStyle="light-content" />
       <ScrollView>
         <View style={styles.detailsImg}>
-         
-
           <Image
             source={{uri: item.imageUrl}}
             style={{
