@@ -1,6 +1,7 @@
 import {
   Image,
   Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -40,7 +41,13 @@ const HomeDetails = ({navigation, route}: any) => {
   //   }
   //   }, [isFocused])
   const openLink = async (lat: any, long: any) => {
-    const url = `https://www.google.com/maps/place/${lat},${long}`;
+    let url = '';
+    if (Platform.OS === 'android') {
+      url = `https://www.google.com/maps/place/${lat},${long}`;
+    }
+    if (Platform.OS == 'ios') {
+      url = `https://maps.apple.com/?ll=${lat},${long}`;
+    }
 
     // Check if the link is supported by the device
     const supported = await Linking.canOpenURL(url);
@@ -141,10 +148,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 20,
   },
   textStylePrimary: {
-    // color: '#fff',
-    fontSize: 20,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: '600',
   },
   textStyleSecondary: {
