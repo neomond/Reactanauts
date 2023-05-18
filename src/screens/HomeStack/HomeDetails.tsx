@@ -38,6 +38,7 @@ const HomeDetails = ({navigation, route}: any) => {
 
  const changeLang = (lang: string) => {
 
+
     i18n.changeLanguage(lang).then(() => {
         // this.props.close(); 
         i18n.options.lng = lang;
