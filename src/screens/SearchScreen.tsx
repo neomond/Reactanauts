@@ -16,13 +16,26 @@ import React, {useContext, useState} from 'react';
 import {LocationIcon, StarIcon, ClockIcon} from '../assets/generatedicons';
 import {DataContext} from '../context/DataContext';
 import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
+import { useTranslation } from 'react-i18next';
 
 const SearchScreen = ({navigation}: any) => {
   const {contextData, setContextData} = useContext(DataContext);
   const [filteredData, setFilteredData] = useState<any[]>(contextData);
   const [searchText, setSearchText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentLanguage, setcurrentLanguage] = useState('az')
 
+  const { t, i18n } = useTranslation();
+
+ const changeLang = (lang: string) => {
+
+    i18n.changeLanguage(lang).then(() => {
+        // this.props.close(); 
+        i18n.options.lng = lang;
+        setcurrentLanguage(lang)
+    });
+
+  }
   console.log(contextData);
   const goToDetail = (item: any) => {
     navigation.navigate('ExploreDetail', {item: item});
@@ -95,7 +108,7 @@ const SearchScreen = ({navigation}: any) => {
           <Text style={styles.iconsearch}>🔍</Text>
           <TextInput
             style={styles.input}
-            placeholder="Search by items"
+            placeholder={t("search").toString()}
             placeholderTextColor="#B9B9B9"
             onChangeText={handleSearch}
           />

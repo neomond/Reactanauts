@@ -18,8 +18,26 @@ import {
 } from '../assets/generatedicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-
+import { useTranslation } from 'react-i18next';
+import '../locales/i18n'
 const SavedItemsScreen = () => {
+
+
+  const [currentLanguage, setcurrentLanguage] = useState('az')
+
+  const { t, i18n } = useTranslation();
+
+ const changeLang = (lang: string) => {
+
+    i18n.changeLanguage(lang).then(() => {
+        // this.props.close(); 
+        i18n.options.lng = lang;
+        setcurrentLanguage(lang)
+    });
+
+
+
+  }
 
   const [savedItems, setSavedItems] = useState<string[]>([]);
   const loadSavedItems = async () => {
@@ -78,7 +96,7 @@ const SavedItemsScreen = () => {
             <View style={styles.thirdContainer}>
               <View style={styles.iconstack}>
                 <LocationIcon width="13" />
-                <Text style={styles.textLabel}>0 km</Text>
+                <Text style={styles.textLabel}>6 km</Text>
               </View>
               <View style={styles.iconstack}>
                 <ClockIcon width="13" />
@@ -99,7 +117,7 @@ const SavedItemsScreen = () => {
    <SafeAreaView style={styles.rootCont}>
        <View style={styles.secondaryCont}>
         <View>
-          <Text style={styles.textStylePrimary}>Saved</Text>
+          <Text style={styles.textStylePrimary}>{t("saved")}</Text>
         </View>
       </View>
     <FlatList

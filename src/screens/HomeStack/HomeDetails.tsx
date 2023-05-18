@@ -28,22 +28,33 @@ const HomeDetails = ({navigation, route}: any) => {
   // const [long,setlong] = useState<Double>(35);
   const isFocused = useIsFocused();
   const {item}: any = route.params;
+
+
+
+
   const [currentLanguage, setcurrentLanguage] = useState('az')
 
   const { t, i18n } = useTranslation();
 
- const changeLang = (lang:any) => {
+ const changeLang = (lang: string) => {
+
 
     i18n.changeLanguage(lang).then(() => {
         // this.props.close(); 
-        // i18n.options.lng = lang;
+        i18n.options.lng = lang;
         setcurrentLanguage(lang)
     });
-}
-  useEffect(() => {
-    changeLang('az')
-  }, [isFocused])
-  
+
+  }
+
+//this works
+  // useEffect(() => {
+  //   changeLang('az')
+  // }, [isFocused])
+   
+
+
+
   //   useEffect(() => {
   //   if(isFocused){
   // setlat(item.lat)
@@ -123,7 +134,7 @@ const HomeDetails = ({navigation, route}: any) => {
           </View>
         </View>
         <View style={styles.thirdCont}>
-          <Text style={styles.textStylePrimaryThird}>Map</Text>
+          <Text style={styles.textStylePrimaryThird}>{t("map")}</Text>
           <View style={styles.mapStyle}>
             <MapView
               style={styles.map}
@@ -140,7 +151,7 @@ const HomeDetails = ({navigation, route}: any) => {
           <TouchableOpacity
             style={styles.btnStyle}
             onPress={() => openLink(lat, long)}>
-            <Text style={styles.btnStyleText}>Go to map</Text>
+            <Text style={styles.btnStyleText}>{t("openmap")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
