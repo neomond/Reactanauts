@@ -29,7 +29,8 @@ import {
   ClockIcon,
   TelephoneIcon,
 } from '../assets/generatedicons';
-
+import '../locales/i18n'
+import { useTranslation } from "react-i18next";
 const SearchDetailScreen = ({navigation, route}: any) => {
   const {item} = route.params;
 

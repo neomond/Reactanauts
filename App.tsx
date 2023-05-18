@@ -1,14 +1,29 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FirstLoginProvider} from './src/context/FirstLoginContext';
 import OpenScreen from './src/screens/openScreen/OpenScreen';
 import {DataProvider} from './src/context/DataContext';
 import {CategoryProvider} from './src/context/CategoriesContext';
 import SplashScreen from 'react-native-splash-screen';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import './src/locales/i18n'
+import { useTranslation } from "react-i18next";
 const App = () => {
+  
+  const [currentLanguageMain, setcurrentLanguageMain] = useState('')
+
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     SplashScreen.hide();
+    AsyncStorage.getItem("language").then(res=>{
+      if (res) {
+        i18n.changeLanguage(res).then(() => {
+          // this.props.close();
+          i18n.options.lng = res;
+          setcurrentLanguageMain(res)
+      });
+      }
+    })
   }, []);
 
   return (

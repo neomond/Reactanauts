@@ -8,10 +8,11 @@ import {
   SearchIconNormal,
 } from '../../assets/generatedicons';
 import SearchStack from '../stack/tab/SearchStack';
+import SettingsStack from '../stack/tab/SettingsStack';
 
 const Tab = createBottomTabNavigator();
 
-const TabMain = () => {
+const TabMain = ({navigation}:any) => {
   return (
     <>
       <Tab.Navigator
@@ -44,6 +45,13 @@ const TabMain = () => {
         <Tab.Screen
           name="Favorites"
           component={SavedItemsScreen}
+          options={{
+            tabBarIcon: ({focused}) => <BookmarkIconNormal focused={focused} />,
+          }}
+        />
+          <Tab.Screen
+          name="Settings"
+          component={SettingsStack}
           options={{
             tabBarIcon: ({focused}) => <BookmarkIconNormal focused={focused} />,
           }}
