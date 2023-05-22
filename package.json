@@ -10,6 +10,11 @@
     "test": "jest",
     "svgr": "svgr ./src/assets/svg  -d ./src/components/images  --native --icon  --svg-props width=24,height=24"
   },
+  "reactNativePermissionsIOS": [
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse"
+  ],
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/geolocation": "^3.0.6",
@@ -47,6 +52,7 @@
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",
     "@types/react": "^18.0.24",
+    "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",

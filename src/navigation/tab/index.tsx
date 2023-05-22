@@ -9,10 +9,11 @@ import {
 } from '../../assets/generatedicons';
 import SearchStack from '../stack/tab/SearchStack';
 import SettingsStack from '../stack/tab/SettingsStack';
+import SvgProfileIcon from '../../assets/generatedicons/ProfileIcon';
 
 const Tab = createBottomTabNavigator();
 
-const TabMain = ({navigation}:any) => {
+const TabMain = ({navigation}: any) => {
   return (
     <>
       <Tab.Navigator
@@ -22,7 +23,7 @@ const TabMain = ({navigation}:any) => {
           tabBarStyle: {
             backgroundColor: '#1C1C1C',
             paddingTop: 15,
-            paddingBottom:5,
+            paddingBottom: 5,
             borderTopColor: 'black',
           },
           headerBackgroundContainerStyle: {borderStartColor: 'black'},
@@ -49,11 +50,11 @@ const TabMain = ({navigation}:any) => {
             tabBarIcon: ({focused}) => <BookmarkIconNormal focused={focused} />,
           }}
         />
-          <Tab.Screen
+        <Tab.Screen
           name="Settings"
           component={SettingsStack}
           options={{
-            tabBarIcon: ({focused}) => <BookmarkIconNormal focused={focused} />,
+            tabBarIcon: ({focused}) => <SvgProfileIcon focused={focused} />,
           }}
         />
       </Tab.Navigator>
