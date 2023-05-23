@@ -230,7 +230,7 @@ const ExploreMain = ({navigation}: any) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
 
-    return Math.floor(distance / 1000);
+    return Math.floor(distance);
   }
 
   const goToDetail = (item: any) => {

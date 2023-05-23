@@ -15,6 +15,9 @@ const SettingsMain = ({navigation}:any) => {
         i18n.options.lng = lang;
         setcurrentLanguage(lang)
     });
+     
+
+      
 
   } 
   return (
