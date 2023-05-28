@@ -17,6 +17,7 @@ import {LocationIcon, StarIcon, ClockIcon} from '../assets/generatedicons';
 import {DataContext} from '../context/DataContext';
 import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
 import {useTranslation} from 'react-i18next';
+import {ThemeContext} from '../context/ThemeContext';
 
 const SearchScreen = ({navigation}: any) => {
   const {contextData, setContextData} = useContext(DataContext);
@@ -25,6 +26,7 @@ const SearchScreen = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentLanguage, setcurrentLanguage] = useState('az');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const {theme, isDarkMode} = useContext(ThemeContext);
 
   const {t, i18n} = useTranslation();
 
@@ -86,19 +88,27 @@ const SearchScreen = ({navigation}: any) => {
         />
       </View>
       <View style={styles.secondaryCintainer}>
-        <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
+        <Text style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+          {item.name}
+        </Text>
         <View style={styles.thirdContainer}>
           <View style={styles.iconstack}>
             <LocationIcon width="13" />
-            <Text style={styles.textLabel}>13 km</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              13 km
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <ClockIcon width="13" />
-            <Text style={styles.textLabel}>{item.openCloseTime}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.openCloseTime}
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <StarIcon width="13" />
-            <Text style={styles.textLabel}>{item.rate}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.rate}
+            </Text>
           </View>
         </View>
       </View>
@@ -106,24 +116,37 @@ const SearchScreen = ({navigation}: any) => {
   );
 
   const renderNoResults = () => (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View
+      style={[
+        {flex: 1, alignItems: 'center'},
+        {backgroundColor: theme.backgroundColor},
+      ]}>
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text style={{color: '#fff', fontSize: 18}}>No results found.</Text>
+        <Text style={[{color: '#fff', fontSize: 18}, {color: theme.textColor}]}>
+          No results found.
+        </Text>
       )}
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.rootCont}>
-      <StatusBar barStyle={'light-content'} />
-      <View style={styles.rooCont1}>
+    <SafeAreaView
+      style={[styles.rootCont, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
+      <View style={[styles.rooCont1, {backgroundColor: theme.backgroundColor}]}>
         <View style={styles.secondaryCont}>
           {/* <SearchIconNormal /> */}
           <Text style={styles.iconsearch}>🔍</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {color: theme.textColor, backgroundColor: theme.backgroundColor},
+            ]}
             placeholder={t('search').toString()}
             placeholderTextColor="#B9B9B9"
             onChangeText={handleSearch}
@@ -140,7 +163,13 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('')}
           >
-            <Text style={styles.textCategories}>All</Text>
+            <Text
+              style={[
+                styles.textCategories,
+                {borderColor: '#E0783E', borderWidth: 1},
+              ]}>
+              All
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -149,7 +178,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('restaurant')}
           >
-            <Text style={styles.textCategories}>🍽️ Restaurant</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🍽️ Restaurant
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -158,7 +189,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('sight')}
           >
-            <Text style={styles.textCategories}>🏛️ Sight</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🏛️ Sight
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -167,7 +200,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('shop')}
           >
-            <Text style={styles.textCategories}>🛍️ Shop</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛍️ Shop
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -176,7 +211,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('museum')}
           >
-            <Text style={styles.textCategories}>🖼️️ Museum</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🖼️️ Museum
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -185,7 +222,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('hotel')}
           >
-            <Text style={styles.textCategories}>🛏️ Hotel</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛏️ Hotel
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -194,7 +233,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('club')}
           >
-            <Text style={styles.textCategories}>🪩 Club</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🪩 Club
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -203,7 +244,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('park')}
           >
-            <Text style={styles.textCategories}>🛝 Park</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛝 Park
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -212,7 +255,9 @@ const SearchScreen = ({navigation}: any) => {
             ]}
             // onPress={() => handleCategoryFilter('hospital')}
           >
-            <Text style={styles.textCategories}>🏨 Hospital</Text>
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🏨 Hospital
+            </Text>
           </TouchableOpacity>
         </ScrollView>
         {filteredData.length === 0 && searchText !== '' ? (
@@ -325,7 +370,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 20,
     marginVertical: 5,
-    height: 28,
+    height: 35,
   },
   categoriesItem: {
     paddingHorizontal: 12,

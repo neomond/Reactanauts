@@ -20,9 +20,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import {BookmarkIconActive} from '../../assets/generatedicons';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const ExploreMain = ({navigation}: any) => {
   const [selectedItemIds, setSelectedItemIds] = useState<any>([]);
+  const {theme, isDarkMode} = useContext(ThemeContext);
 
   const [load, setload] = useState(false);
   const isFocused = useIsFocused();
@@ -271,7 +273,8 @@ const ExploreMain = ({navigation}: any) => {
             </View>
           </View>
           <View style={{marginTop: 12, marginLeft: 10}}>
-            <Text style={{color: '#fff', fontSize: 16, marginLeft: 10}}>
+            <Text
+              style={{color: theme.textColor, fontSize: 16, marginLeft: 10}}>
               {item.name}
             </Text>
           </View>
@@ -288,7 +291,7 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{color: 'white'}}>
+              <Text style={[{color: theme.textColor}]}>
                 {calculateDistance(latitude, longitude, item.lat, item.long)} KM
               </Text>
             </View>
@@ -298,7 +301,9 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{color: 'white'}}>{item.openCloseTime}</Text>
+              <Text style={[{color: theme.textColor}]}>
+                {item.openCloseTime}
+              </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <Ulsuz
@@ -306,7 +311,9 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{fontSize: 14, color: 'white'}}>{item.rate}</Text>
+              <Text style={[{fontSize: 14}, {color: theme.textColor}]}>
+                {item.rate}
+              </Text>
             </View>
           </View>
         </View>
@@ -315,20 +322,27 @@ const ExploreMain = ({navigation}: any) => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#1c1c1c'}}>
-      <StatusBar barStyle="light-content" />
+    <SafeAreaView style={[{flex: 1}, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
       <Wheather />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {sections.map((bolum, index) => (
           <View key={index}>
             <View style={{marginLeft: 20}}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginTop: 30,
-                  color: 'white',
-                }}>
+                style={[
+                  {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    marginTop: 30,
+                  },
+                  {
+                    color: theme.textColor,
+                  },
+                ]}>
                 {bolum.title}
               </Text>
             </View>

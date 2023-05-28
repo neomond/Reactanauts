@@ -5,11 +5,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import '../../locales/i18n';
 import {useTranslation} from 'react-i18next';
+import {Switch, Provider as PaperProvider} from 'react-native-paper';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const SettingsMain = ({navigation}: any) => {
+  const {isDarkMode, toggleTheme, theme} = useContext(ThemeContext);
+
   const [currentLanguage, setcurrentLanguage] = useState('az');
   const {t, i18n} = useTranslation();
 
@@ -20,16 +24,41 @@ const SettingsMain = ({navigation}: any) => {
       setcurrentLanguage(lang);
     });
   };
+
+  const onToggleSwitch = () => {
+    toggleTheme();
+  };
+
   return (
-    <SafeAreaView style={styles.main}>
-      <Text style={styles.header}>{t('settings')}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('LanguageSelect');
-        }}>
-        <Text style={styles.langText}>{t('changelang')}</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+    <PaperProvider
+      theme={{
+        colors: {
+          primary: 'rgba(224, 120, 62, 1)',
+        },
+      }}>
+      <SafeAreaView
+        style={[styles.main, {backgroundColor: theme.backgroundColor}]}>
+        <View style={styles.toggleWrapper}>
+          <TouchableOpacity onPress={toggleTheme}>
+            <Switch
+              style={styles.switch}
+              value={isDarkMode}
+              onValueChange={onToggleSwitch}
+            />
+          </TouchableOpacity>
+          <Text style={[styles.header, {color: theme.textColor}]}>
+            {t('settings')}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('LanguageSelect');
+          }}>
+          <Text style={styles.langText}>{t('changelang')}</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </PaperProvider>
   );
 };
 
@@ -57,5 +86,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(224, 120, 62, 1)',
     overflow: 'hidden',
     borderRadius: 8,
+  },
+  switch: {
+    transform: [{scale: 0.8}],
+  },
+  toggleWrapper: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    columnGap: 50,
+    marginBottom: 10,
   },
 });

@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   LocationIcon,
   StarIcon,
@@ -20,40 +20,34 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {useIsFocused, useTheme} from '@react-navigation/native';
 import {Double} from 'react-native/Libraries/Types/CodegenTypes';
-import '../../locales/i18n'
-import { useTranslation } from "react-i18next";
+import '../../locales/i18n';
+import {useTranslation} from 'react-i18next';
+import {ThemeContext} from '../../context/ThemeContext';
+
 const HomeDetails = ({navigation, route}: any) => {
- 
-    // const [lat,setlat] = useState<Double>(35);
+  const {theme, isDarkMode} = useContext(ThemeContext);
+
+  // const [lat,setlat] = useState<Double>(35);
   // const [long,setlong] = useState<Double>(35);
   const isFocused = useIsFocused();
   const {item}: any = route.params;
 
+  const [currentLanguage, setcurrentLanguage] = useState('az');
 
+  const {t, i18n} = useTranslation();
 
-
-  const [currentLanguage, setcurrentLanguage] = useState('az')
-
-  const { t, i18n } = useTranslation();
-
- const changeLang = (lang: string) => {
-
-
+  const changeLang = (lang: string) => {
     i18n.changeLanguage(lang).then(() => {
-        // this.props.close(); 
-        i18n.options.lng = lang;
-        setcurrentLanguage(lang)
+      // this.props.close();
+      i18n.options.lng = lang;
+      setcurrentLanguage(lang);
     });
+  };
 
-  }
-
-//this works
+  //this works
   // useEffect(() => {
   //   changeLang('az')
   // }, [isFocused])
-   
-
-
 
   //   useEffect(() => {
   //   if(isFocused){
@@ -92,8 +86,12 @@ const HomeDetails = ({navigation, route}: any) => {
   const long = parseFloat(item.long);
 
   return (
-    <SafeAreaView style={styles.mainCont}>
-      <StatusBar barStyle="light-content" />
+    <SafeAreaView
+      style={[styles.mainCont, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
       <ScrollView>
         <View style={styles.detailsImg}>
           <Image
@@ -109,32 +107,48 @@ const HomeDetails = ({navigation, route}: any) => {
         </View>
         <View style={styles.secondaryCont}>
           <View>
-            <Text style={styles.textStylePrimary}>{item.name}</Text>
+            <Text style={[styles.textStylePrimary, {color: theme.textColor}]}>
+              {item.name}
+            </Text>
           </View>
           <View style={[styles.iconstack, {columnGap: 3}]}>
             <StarIcon width="15" />
-            <Text style={styles.textStyleSecondary}>{item.rate}</Text>
+            <Text style={[styles.textStyleSecondary, {color: theme.textColor}]}>
+              {item.rate}
+            </Text>
           </View>
         </View>
         <View style={styles.thirdCont}>
-          <Text style={styles.textStylePrimaryThird}>{t("information")}</Text>
+          <Text
+            style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+            {t('information')}
+          </Text>
           <View style={{rowGap: 8}}>
             <View style={styles.iconstack}>
               <ClockIcon width="15" />
-              <Text style={styles.textStyleThird}>{item.openCloseTime}</Text>
+              <Text style={[styles.textStyleThird, {color: theme.textColor}]}>
+                {item.openCloseTime}
+              </Text>
             </View>
             <View style={styles.iconstack}>
               <TelephoneIcon width="14" />
-              <Text style={styles.textStyleThird}>{item.phone}</Text>
+              <Text style={[styles.textStyleThird, {color: theme.textColor}]}>
+                {item.phone}
+              </Text>
             </View>
             <View style={styles.iconstack}>
               <LocationIcon width="14" />
-              <Text style={styles.textStyleThird}>{item.adress}</Text>
+              <Text style={[styles.textStyleThird, {color: theme.textColor}]}>
+                {item.adress}
+              </Text>
             </View>
           </View>
         </View>
         <View style={styles.thirdCont}>
-          <Text style={styles.textStylePrimaryThird}>{t("map")}</Text>
+          <Text
+            style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+            {t('map')}
+          </Text>
           <View style={styles.mapStyle}>
             <MapView
               style={styles.map}
@@ -151,7 +165,7 @@ const HomeDetails = ({navigation, route}: any) => {
           <TouchableOpacity
             style={styles.btnStyle}
             onPress={() => openLink(lat, long)}>
-            <Text style={styles.btnStyleText}>{t("openmap")}</Text>
+            <Text style={styles.btnStyleText}>{t('openmap')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

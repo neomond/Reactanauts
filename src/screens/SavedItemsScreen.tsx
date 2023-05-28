@@ -6,8 +6,9 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {
   LocationIcon,
@@ -19,8 +20,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import '../locales/i18n';
+import {ThemeContext} from '../context/ThemeContext';
 const SavedItemsScreen = () => {
   const [currentLanguage, setcurrentLanguage] = useState('az');
+  const {isDarkMode, toggleTheme, theme} = useContext(ThemeContext);
 
   const {t, i18n} = useTranslation();
 
@@ -82,19 +85,27 @@ const SavedItemsScreen = () => {
         />
       </View>
       <View style={styles.secondaryCintainer}>
-        <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
+        <Text style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+          {item.name}
+        </Text>
         <View style={styles.thirdContainer}>
           <View style={styles.iconstack}>
             <LocationIcon width="13" />
-            <Text style={styles.textLabel}>6 km</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              6 km
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <ClockIcon width="13" />
-            <Text style={styles.textLabel}>{item.openCloseTime}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.openCloseTime}
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <StarIcon width="13" />
-            <Text style={styles.textLabel}>{item.rate}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.rate}
+            </Text>
           </View>
         </View>
       </View>
@@ -106,10 +117,17 @@ const SavedItemsScreen = () => {
     </View>
   );
   return (
-    <SafeAreaView style={styles.rootCont}>
+    <SafeAreaView
+      style={[styles.rootCont, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
       <View style={styles.secondaryCont}>
         <View>
-          <Text style={styles.textStylePrimary}>{t('saved')}</Text>
+          <Text style={[styles.textStylePrimary, {color: theme.textColor}]}>
+            {t('saved')}
+          </Text>
         </View>
       </View>
       {savedItems.length === 0 ? (
@@ -171,7 +189,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     paddingTop: 4,
-    textAlign: 'center',
   },
   thirdContainer: {
     flexDirection: 'row',
