@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Button, Image, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import axios from 'axios';
 import {Loc} from '../images';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const API_KEY = '729cf7aad0a46677bbf6c8da49f416b5'; // Replace 'YOUR_API_KEY' with your OpenWeatherMap API key
 
@@ -14,6 +15,7 @@ const App = () => {
   const [location, setLocation] = useState<any>(null);
   const [weatherData, setWeatherData] = useState<any>(null);
   const [konum, setKonum] = useState<any>([]);
+  const {theme} = useContext(ThemeContext);
 
   const getLocation = async () => {
     let granted = '';
@@ -94,17 +96,24 @@ const App = () => {
         justifyContent: 'center',
       }}>
       <View
-        style={{
-          backgroundColor: '#262626',
-          flexDirection: 'row',
-          padding: 10,
-          width: '70%',
-          borderRadius: 10,
-        }}>
+        style={[
+          {
+            flexDirection: 'row',
+            padding: 10,
+            width: '65%',
+            borderRadius: 10,
+            borderColor: '#262626',
+            borderWidth: 1,
+            marginLeft: 10,
+          },
+          {backgroundColor: theme.backgroundColor},
+        ]}>
         <Loc />
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-          <Text style={{color: 'white', fontSize: 15}}>{konum.city}</Text>
-          <Text style={{color: 'white', fontSize: 15}}>
+          <Text style={[{fontSize: 15}, {color: theme.textColor}]}>
+            {konum.city}
+          </Text>
+          <Text style={[{fontSize: 15}, {color: theme.textColor}]}>
             {konum.countryName && konum.countryName.length > 12
               ? konum.countryName.slice(0, 9) + '...'
               : konum.countryName}
@@ -113,23 +122,27 @@ const App = () => {
       </View>
       {weatherData && (
         <View
-          style={{
-            backgroundColor: '#262626',
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 10,
-            paddingRight: 10,
-            width: 80,
-            marginLeft: 15,
-            borderRadius: 10,
-          }}>
+          style={[
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 10,
+              paddingRight: 10,
+              width: 80,
+              marginLeft: 15,
+              borderRadius: 10,
+              borderColor: '#262626',
+              borderWidth: 1,
+            },
+            {backgroundColor: theme.backgroundColor},
+          ]}>
           <Image
             style={{width: 30, height: 20}}
             source={{
               uri: `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
             }}
           />
-          <Text style={{color: 'white', fontSize: 15}}>
+          <Text style={[{fontSize: 15}, {color: theme.textColor}]}>
             {Math.round(weatherData.main.temp) - 273} °C
           </Text>
         </View>

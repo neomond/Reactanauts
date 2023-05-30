@@ -5,13 +5,15 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import '../../locales/i18n';
 import {useTranslation} from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const LanguageSelect = ({navigation}: any) => {
   const [currentLanguage, setcurrentLanguage] = useState('az');
+  const {theme} = useContext(ThemeContext);
 
   const {t, i18n} = useTranslation();
 
@@ -25,8 +27,11 @@ const LanguageSelect = ({navigation}: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.main}>
-      <Text style={styles.header}>{t('selectlang')}</Text>
+    <SafeAreaView
+      style={[styles.main, {backgroundColor: theme.backgroundColor}]}>
+      <Text style={[styles.header, {color: theme.textColor}]}>
+        {t('selectlang')}
+      </Text>
       <View style={styles.langTypesWrapper}>
         <View style={styles.langItems}>
           <Text style={styles.langFlag}>🇦🇿</Text>
@@ -35,7 +40,9 @@ const LanguageSelect = ({navigation}: any) => {
               changeLang('az');
               navigation.navigate('SettingsMain');
             }}>
-            <Text style={styles.langText}>Azərbaycanca</Text>
+            <Text style={[styles.langText, {color: theme.textColor}]}>
+              Azərbaycanca
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.langItems}>
@@ -45,7 +52,9 @@ const LanguageSelect = ({navigation}: any) => {
               changeLang('en');
               navigation.navigate('SettingsMain');
             }}>
-            <Text style={styles.langText}>English</Text>
+            <Text style={[styles.langText, {color: theme.textColor}]}>
+              English
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

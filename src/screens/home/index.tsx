@@ -7,26 +7,24 @@ import {
   Image,
   Platform,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {BaseNetwork} from '../../network/api';
 import {FavoritesContext} from '../../context/FavoritesContext';
-import {ActivityIndicator, Button} from 'react-native-paper';
 import Wheather from '../../components/Onboarding/Wheather';
-import {Kayd, Loc, Saat, Ulsuz} from '../../components/images';
-import {getAllData} from '../../utils/network/api';
+import {Loc, Saat, Ulsuz} from '../../components/images';
 import {DataContext} from '../../context/DataContext';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
-import Geocoder from 'react-native-geocoding';
-import { BookmarkIconActive } from '../../assets/generatedicons';
+import {BookmarkIconActive} from '../../assets/generatedicons';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const ExploreMain = ({navigation}: any) => {
   const [selectedItemIds, setSelectedItemIds] = useState<any>([]);
+  const {theme, isDarkMode} = useContext(ThemeContext);
 
   const [load, setload] = useState(false);
   const isFocused = useIsFocused();
@@ -39,8 +37,6 @@ const ExploreMain = ({navigation}: any) => {
   const [isButtonPressed, setIsButtonPressed] = useState<any>(false);
 
   const getLocation = async () => {
-
-    
     let granted = '';
     try {
       if (Platform.OS == 'ios') {
@@ -78,7 +74,6 @@ const ExploreMain = ({navigation}: any) => {
   };
   useEffect(() => {
     getLocation();
-  
 
     AsyncStorage.getItem('userCategories').then(res => {
       console.log(res);
@@ -123,7 +118,6 @@ const ExploreMain = ({navigation}: any) => {
   const [products, setproducts] = useState<any[]>([]);
 
   const favOperation = (item: any) => {
-   
     let favControl = favorites.find(favItem => favItem.id === item.id);
     if (!favControl) {
       setFavorites([...favorites, item]);
@@ -137,11 +131,10 @@ const ExploreMain = ({navigation}: any) => {
   //   try {
   //     const basketItems: any = await AsyncStorage.getItem('basket');
   //     let basket = [];
-     
-  
+
   //     if (basketItems !== null) {
   //       basket = JSON.parse(basketItems);
-  
+
   //       const isItemInBasket = basket.some((basketItem: any) => basketItem.id === item.id);
   //       if (isItemInBasket) {
   //         // Item already exists in the basket, remove it
@@ -167,25 +160,29 @@ const ExploreMain = ({navigation}: any) => {
   const Favorites = async (item: any) => {
     setIsButtonPressed(!isButtonPressed);
     if (selectedItemIds.includes(item.id)) {
-      
-      const updatedItemIds = selectedItemIds.filter((item:any) => item.id !== item.id);
+      const updatedItemIds = selectedItemIds.filter(
+        (item: any) => item.id !== item.id,
+      );
       setSelectedItemIds(updatedItemIds);
     } else {
-      
       setSelectedItemIds([...selectedItemIds, item.id]);
     }
-  
+
     try {
       const basketItems: any = await AsyncStorage.getItem('basket');
       let basket = [];
-  
+
       if (basketItems !== null) {
         basket = JSON.parse(basketItems);
-  
-        const isItemInBasket = basket.some((basketItem: any) => basketItem.id === item.id);
+
+        const isItemInBasket = basket.some(
+          (basketItem: any) => basketItem.id === item.id,
+        );
         if (isItemInBasket) {
           // Item already exists in the basket, remove it
-          const updatedBasket = basket.filter((basketItem: any) => basketItem.id !== item.id);
+          const updatedBasket = basket.filter(
+            (basketItem: any) => basketItem.id !== item.id,
+          );
           await AsyncStorage.setItem('basket', JSON.stringify(updatedBasket));
           console.log('Item removed from basket:', item);
         } else {
@@ -204,10 +201,7 @@ const ExploreMain = ({navigation}: any) => {
       console.error('Error adding/removing item to/from basket:', error);
     }
   };
-  
-  
-  
-  
+
   function toRadians(degrees: any) {
     return degrees * (Math.PI / 180);
   }
@@ -239,7 +233,6 @@ const ExploreMain = ({navigation}: any) => {
   // Example usage
 
   const renderItem = ({item}: any) => (
-
     <Pressable onPress={() => goToDetail(item)}>
       <View
         style={{
@@ -270,19 +263,18 @@ const ExploreMain = ({navigation}: any) => {
                 padding: 10,
                 borderRadius: 100,
               }}>
-              <TouchableOpacity onPress={()=>Favorites(item)}>
-              <BookmarkIconActive 
-               width="12"
-                height="20"
-                fill={selectedItemIds.includes(item.id) ? 'white' : 'black'}
-
-                
+              <TouchableOpacity onPress={() => Favorites(item)}>
+                <BookmarkIconActive
+                  width="12"
+                  height="20"
+                  fill={selectedItemIds.includes(item.id) ? 'white' : 'black'}
                 />
               </TouchableOpacity>
             </View>
           </View>
           <View style={{marginTop: 12, marginLeft: 10}}>
-            <Text style={{color: '#fff', fontSize: 16, marginLeft: 10}}>
+            <Text
+              style={{color: theme.textColor, fontSize: 16, marginLeft: 10}}>
               {item.name}
             </Text>
           </View>
@@ -299,7 +291,7 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{color: 'white'}}>
+              <Text style={[{color: theme.textColor}]}>
                 {calculateDistance(latitude, longitude, item.lat, item.long)} KM
               </Text>
             </View>
@@ -309,7 +301,9 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{color: 'white'}}>{item.openCloseTime}</Text>
+              <Text style={[{color: theme.textColor}]}>
+                {item.openCloseTime}
+              </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <Ulsuz
@@ -317,7 +311,9 @@ const ExploreMain = ({navigation}: any) => {
                 height="12"
                 style={{marginRight: 4, marginTop: 2}}
               />
-              <Text style={{fontSize: 14, color: 'white'}}>{item.rate}</Text>
+              <Text style={[{fontSize: 14}, {color: theme.textColor}]}>
+                {item.rate}
+              </Text>
             </View>
           </View>
         </View>
@@ -326,19 +322,27 @@ const ExploreMain = ({navigation}: any) => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#1c1c1c'}}>
+    <SafeAreaView style={[{flex: 1}, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
       <Wheather />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {sections.map((bolum, index) => (
           <View key={index}>
             <View style={{marginLeft: 20}}>
               <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginTop: 30,
-                  color: 'white',
-                }}>
+                style={[
+                  {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    marginTop: 30,
+                  },
+                  {
+                    color: theme.textColor,
+                  },
+                ]}>
                 {bolum.title}
               </Text>
             </View>
@@ -357,5 +361,3 @@ const ExploreMain = ({navigation}: any) => {
 };
 
 export default ExploreMain;
-
-const styles = StyleSheet.create({});

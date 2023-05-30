@@ -6,35 +6,37 @@ import {DataProvider} from './src/context/DataContext';
 import {CategoryProvider} from './src/context/CategoriesContext';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import './src/locales/i18n'
-import { useTranslation } from "react-i18next";
+import './src/locales/i18n';
+import {useTranslation} from 'react-i18next';
+import {ThemeProvider} from './src/context/ThemeContext';
 const App = () => {
-  
-  const [currentLanguageMain, setcurrentLanguageMain] = useState('')
+  const [currentLanguageMain, setcurrentLanguageMain] = useState('');
 
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
   useEffect(() => {
     SplashScreen.hide();
-    AsyncStorage.getItem("language").then(res=>{
+    AsyncStorage.getItem('language').then(res => {
       if (res) {
         i18n.changeLanguage(res).then(() => {
           // this.props.close();
           i18n.options.lng = res;
-          setcurrentLanguageMain(res)
-      });
+          setcurrentLanguageMain(res);
+        });
       }
-    })
+    });
   }, []);
 
   return (
     <>
       <NavigationContainer>
         <CategoryProvider>
-          <DataProvider>
-            <FirstLoginProvider>
-              <OpenScreen />
-            </FirstLoginProvider>
-          </DataProvider>
+          <ThemeProvider>
+            <DataProvider>
+              <FirstLoginProvider>
+                <OpenScreen />
+              </FirstLoginProvider>
+            </DataProvider>
+          </ThemeProvider>
         </CategoryProvider>
       </NavigationContainer>
     </>
@@ -47,17 +49,16 @@ export default App;
 // import {View, Text,Pressable} from 'react-native';
 // import {useTranslation} from 'react-i18next';
 // import SplashScreen from 'react-native-splash-screen';
-  
+
 // const App = () => {
 
 //     useEffect(() => {
-      
-    
+
 //     SplashScreen.hide()
 //     }, [])
-    
+
 //   const {t, i18n} = useTranslation();
- 
+
 // useEffect(() => {
 //   i18n.changeLanguage('az')
 // })
@@ -65,8 +66,7 @@ export default App;
 //    <View
 //         style={{
 //           flex: 1,
-     
-      
+
 //         }}>
 //         <Text style={{fontWeight: 'bold', fontSize: 25, color: 'red'}}>
 //           {t('information')}
@@ -74,9 +74,9 @@ export default App;
 //         <Text style={{fontWeight: 'bold', fontSize: 25, color: 'red'}}>
 //           {t('information')}
 //         </Text>
-       
+
 //       </View>
 //   );
 // };
-  
+
 // export default App;
