@@ -16,26 +16,27 @@ import React, {useContext, useState} from 'react';
 import {LocationIcon, StarIcon, ClockIcon} from '../assets/generatedicons';
 import {DataContext} from '../context/DataContext';
 import SvgBookmarkIconActive from '../assets/generatedicons/BookmarkIconActive';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import {ThemeContext} from '../context/ThemeContext';
 
 const SearchScreen = ({navigation}: any) => {
   const {contextData, setContextData} = useContext(DataContext);
   const [filteredData, setFilteredData] = useState<any[]>(contextData);
   const [searchText, setSearchText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentLanguage, setcurrentLanguage] = useState('az')
+  const [currentLanguage, setcurrentLanguage] = useState('az');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const {theme, isDarkMode} = useContext(ThemeContext);
 
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
 
- const changeLang = (lang: string) => {
-
+  const changeLang = (lang: string) => {
     i18n.changeLanguage(lang).then(() => {
-        // this.props.close(); 
-        i18n.options.lng = lang;
-        setcurrentLanguage(lang)
+      // this.props.close();
+      i18n.options.lng = lang;
+      setcurrentLanguage(lang);
     });
-
-  }
+  };
   console.log(contextData);
   const goToDetail = (item: any) => {
     navigation.navigate('ExploreDetail', {item: item});
@@ -51,6 +52,23 @@ const SearchScreen = ({navigation}: any) => {
     setFilteredData(filtered);
     setLoading(false);
   };
+
+  // const handleCategoryFilter = (category: string): void => {
+  //   setSelectedCategory(category);
+  //   setLoading(true);
+  //   const filtered = contextData.filter((item: any) =>
+  //     item.category.toLowerCase().includes(category.toLowerCase()),
+  //   );
+  //   if (searchText !== '') {
+  //     const filteredBySearch = filtered.filter((item: any) =>
+  //       item.name.toLowerCase().includes(searchText.toLowerCase()),
+  //     );
+  //     setFilteredData(filteredBySearch);
+  //   } else {
+  //     setFilteredData(filtered);
+  //   }
+  //   setLoading(false);
+  // };
 
   const [dataToShow, setDataToShow] = useState(contextData);
   const renderItem = ({item}: any) => (
@@ -70,19 +88,27 @@ const SearchScreen = ({navigation}: any) => {
         />
       </View>
       <View style={styles.secondaryCintainer}>
-        <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
+        <Text style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+          {item.name}
+        </Text>
         <View style={styles.thirdContainer}>
           <View style={styles.iconstack}>
             <LocationIcon width="13" />
-            <Text style={styles.textLabel}>13 km</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              13 km
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <ClockIcon width="13" />
-            <Text style={styles.textLabel}>{item.openCloseTime}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.openCloseTime}
+            </Text>
           </View>
           <View style={styles.iconstack}>
             <StarIcon width="13" />
-            <Text style={styles.textLabel}>{item.rate}</Text>
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.rate}
+            </Text>
           </View>
         </View>
       </View>
@@ -90,25 +116,38 @@ const SearchScreen = ({navigation}: any) => {
   );
 
   const renderNoResults = () => (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View
+      style={[
+        {flex: 1, alignItems: 'center'},
+        {backgroundColor: theme.backgroundColor},
+      ]}>
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text style={{color: '#fff', fontSize: 18}}>No products found.</Text>
+        <Text style={[{color: '#fff', fontSize: 18}, {color: theme.textColor}]}>
+          No results found.
+        </Text>
       )}
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.rootCont}>
-      <StatusBar barStyle={'light-content'} />
-      <View style={styles.rooCont1}>
+    <SafeAreaView
+      style={[styles.rootCont, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
+      <View style={[styles.rooCont1, {backgroundColor: theme.backgroundColor}]}>
         <View style={styles.secondaryCont}>
           {/* <SearchIconNormal /> */}
           <Text style={styles.iconsearch}>🔍</Text>
           <TextInput
-            style={styles.input}
-            placeholder={t("search").toString()}
+            style={[
+              styles.input,
+              {color: theme.textColor, backgroundColor: theme.backgroundColor},
+            ]}
+            placeholder={t('search').toString()}
             placeholderTextColor="#B9B9B9"
             onChangeText={handleSearch}
           />
@@ -117,30 +156,109 @@ const SearchScreen = ({navigation}: any) => {
           horizontal={true}
           style={styles.categoriesItems}
           showsHorizontalScrollIndicator={false}>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🍽️ Restaurant</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🏛️ Sight</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🛍️ Shop</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🖼️️ Museum</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🛏️ Hotel</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🪩 Club</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🛝 Park</Text>
-          </View>
-          <View style={styles.categoriesItem}>
-            <Text style={styles.textCategories}>🏨 Hospital</Text>
-          </View>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === '' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('')}
+          >
+            <Text
+              style={[
+                styles.textCategories,
+                {borderColor: '#E0783E', borderWidth: 1},
+              ]}>
+              All
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'restaurant' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('restaurant')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🍽️ Restaurant
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'sight' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('sight')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🏛️ Sight
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'shop' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('shop')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛍️ Shop
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'museum' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('museum')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🖼️️ Museum
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'hotel' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('hotel')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛏️ Hotel
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'club' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('club')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🪩 Club
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'park' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('park')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🛝 Park
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.categoriesItem,
+              selectedCategory === 'hospital' && styles.selectedCategoryItem,
+            ]}
+            // onPress={() => handleCategoryFilter('hospital')}
+          >
+            <Text style={[styles.textCategories, {color: theme.textColor}]}>
+              🏨 Hospital
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
         {filteredData.length === 0 && searchText !== '' ? (
           renderNoResults()
@@ -160,17 +278,6 @@ const SearchScreen = ({navigation}: any) => {
 
 export default SearchScreen;
 
-// id: place.id,
-// name: place.name,
-// categoryId: place.categoryId,
-// rate: place.rate,
-// lat: place.lat,
-// long: place.long,
-// imageUrl: place.imageUrl,
-// openCloseTime: place.openCloseTime,
-// adress: place.adress,
-// phone: place.phone,
-// isSaved: place.isSaved,
 const styles = StyleSheet.create({
   rootCont: {
     backgroundColor: '#1C1C1C',
@@ -263,7 +370,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 20,
     marginVertical: 5,
-    height: 28,
+    height: 35,
   },
   categoriesItem: {
     paddingHorizontal: 12,
@@ -277,5 +384,8 @@ const styles = StyleSheet.create({
   textCategories: {
     color: '#fff',
     fontSize: 14,
+  },
+  selectedCategoryItem: {
+    backgroundColor: 'tomato',
   },
 });

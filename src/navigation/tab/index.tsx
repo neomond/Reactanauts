@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ExploreStack from '../stack/tab/ExploreStack';
 import SavedItemsScreen from '../../screens/SavedItemsScreen';
@@ -10,10 +10,13 @@ import {
 import SearchStack from '../stack/tab/SearchStack';
 import SettingsStack from '../stack/tab/SettingsStack';
 import SvgProfileIcon from '../../assets/generatedicons/ProfileIcon';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 
 const TabMain = ({navigation}: any) => {
+  const {isDarkMode, toggleTheme, theme} = useContext(ThemeContext);
+
   return (
     <>
       <Tab.Navigator
@@ -21,12 +24,14 @@ const TabMain = ({navigation}: any) => {
           headerShown: false,
           title: '',
           tabBarStyle: {
-            backgroundColor: '#1C1C1C',
+            backgroundColor: isDarkMode ? '#1c1c1c' : '#fff',
             paddingTop: 15,
             paddingBottom: 5,
-            borderTopColor: 'black',
+            borderTopColor: isDarkMode ? '#1c1c1c' : '#fff',
           },
-          headerBackgroundContainerStyle: {borderStartColor: 'black'},
+          headerBackgroundContainerStyle: {
+            borderStartColor: isDarkMode ? '#1c1c1c' : '#fff',
+          },
         }}>
         <Tab.Screen
           name="HomeStack"

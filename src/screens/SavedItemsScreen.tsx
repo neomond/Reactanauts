@@ -1,14 +1,14 @@
 import {
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {
   LocationIcon,
@@ -17,27 +17,23 @@ import {
   BookmarkIconActive,
 } from '../assets/generatedicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import '../locales/i18n'
+import {useFocusEffect} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import '../locales/i18n';
+import {ThemeContext} from '../context/ThemeContext';
 const SavedItemsScreen = () => {
+  const [currentLanguage, setcurrentLanguage] = useState('az');
+  const {isDarkMode, toggleTheme, theme} = useContext(ThemeContext);
 
+  const {t, i18n} = useTranslation();
 
-  const [currentLanguage, setcurrentLanguage] = useState('az')
-
-  const { t, i18n } = useTranslation();
-
- const changeLang = (lang: string) => {
-
+  const changeLang = (lang: string) => {
     i18n.changeLanguage(lang).then(() => {
-        // this.props.close(); 
-        i18n.options.lng = lang;
-        setcurrentLanguage(lang)
+      // this.props.close();
+      i18n.options.lng = lang;
+      setcurrentLanguage(lang);
     });
-
-
-
-  }
+  };
 
   const [savedItems, setSavedItems] = useState<string[]>([]);
   const loadSavedItems = async () => {
@@ -46,8 +42,6 @@ const SavedItemsScreen = () => {
       if (savedItemsJson) {
         const savedItemsArray = JSON.parse(savedItemsJson);
         setSavedItems(savedItemsArray);
-       
-        
       }
     } catch (error) {
       console.log('Error loading saved items:', error);
@@ -58,7 +52,7 @@ const SavedItemsScreen = () => {
     loadSavedItems();
   });
   const handleRemoveItem = async (item: string) => {
-    const updatedItems = savedItems.filter((savedItem) => savedItem !== item);
+    const updatedItems = savedItems.filter(savedItem => savedItem !== item);
     setSavedItems(updatedItems);
     try {
       await AsyncStorage.setItem('basket', JSON.stringify(updatedItems));
@@ -66,66 +60,86 @@ const SavedItemsScreen = () => {
       console.log('Error removing item:', error);
     }
   };
-  const renderItem = ({ item } : any) => (
-  
-        <View>
-          <View style={styles.detailsImg}>
-            <View style={styles.bookmarkIcon}>
-              <TouchableOpacity  onPress={() => handleRemoveItem(item)}>
-              <BookmarkIconActive
-                width="12"
-                height="12"
-                fill="#fff"
-                stroke="#fff"
-              />
-              </TouchableOpacity>
-            </View>
-
-            <Image
-              style={{
-                width: '90%',
-                height: 253,
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
-              }}
-              source={{uri: item.imageUrl}}
+  const renderItem = ({item}: any) => (
+    <View>
+      <View style={styles.detailsImg}>
+        <View style={styles.bookmarkIcon}>
+          <TouchableOpacity onPress={() => handleRemoveItem(item)}>
+            <BookmarkIconActive
+              width="12"
+              height="12"
+              fill="#fff"
+              stroke="#fff"
             />
-          </View>
-          <View style={styles.secondaryCintainer}>
-            <Text style={styles.textStylePrimaryThird}>{item.name}</Text>
-            <View style={styles.thirdContainer}>
-              <View style={styles.iconstack}>
-                <LocationIcon width="13" />
-                <Text style={styles.textLabel}>6 km</Text>
-              </View>
-              <View style={styles.iconstack}>
-                <ClockIcon width="13" />
-                <Text style={styles.textLabel}>{item.openCloseTime}</Text>
-    
-              </View>
-              <View style={styles.iconstack}>
-                <StarIcon width="13" />
-                <Text style={styles.textLabel}>{item.rate}</Text>
-              </View>
-            </View>
-          </View>
+          </TouchableOpacity>
         </View>
-    
-  );
 
-  return (
-   <SafeAreaView style={styles.rootCont}>
-       <View style={styles.secondaryCont}>
-        <View>
-          <Text style={styles.textStylePrimary}>{t("saved")}</Text>
+        <Image
+          style={{
+            width: '90%',
+            height: 253,
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+          }}
+          source={{uri: item.imageUrl}}
+        />
+      </View>
+      <View style={styles.secondaryCintainer}>
+        <Text style={[styles.textStylePrimaryThird, {color: theme.textColor}]}>
+          {item.name}
+        </Text>
+        <View style={styles.thirdContainer}>
+          <View style={styles.iconstack}>
+            <LocationIcon width="13" />
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              6 km
+            </Text>
+          </View>
+          <View style={styles.iconstack}>
+            <ClockIcon width="13" />
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.openCloseTime}
+            </Text>
+          </View>
+          <View style={styles.iconstack}>
+            <StarIcon width="13" />
+            <Text style={[styles.textLabel, {color: theme.textColor}]}>
+              {item.rate}
+            </Text>
+          </View>
         </View>
       </View>
-    <FlatList
-        data={savedItems}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+    </View>
+  );
+  const renderEmptyList = () => (
+    <View style={styles.emptyListContainer}>
+      <Text style={styles.emptyListText}>{t('noSavedItems')}</Text>
+    </View>
+  );
+  return (
+    <SafeAreaView
+      style={[styles.rootCont, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
       />
-   </SafeAreaView>
+      <View style={styles.secondaryCont}>
+        <View>
+          <Text style={[styles.textStylePrimary, {color: theme.textColor}]}>
+            {t('saved')}
+          </Text>
+        </View>
+      </View>
+      {savedItems.length === 0 ? (
+        renderEmptyList()
+      ) : (
+        <FlatList
+          data={savedItems}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -199,5 +213,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     backgroundColor: '#1C1C1C',
+  },
+  emptyListContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyListText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'gray',
   },
 });
